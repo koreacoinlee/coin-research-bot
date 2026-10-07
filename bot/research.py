@@ -191,8 +191,8 @@ def main():
         v = res["valid"]
         if v["sharpe"] < cfg["min_valid_sharpe"] or v["trades"] < cfg["min_trades_valid"]:
             continue
-        # 학습/검증 성과 차이가 너무 크면 과최적화로 간주
-        if v["sharpe"] < 0.4 * res["train"]["sharpe"]:
+        # 검증 구간에서 '그냥 들고 있기'보다 확실히 나아야 함 (상승장·하락장 모두 공정하게 비교)
+        if v["sharpe"] < bh_valid + cfg["min_valid_excess"]:
             continue
         # 이미 있는 전략과 거의 똑같이 움직이면 중복으로 보고 건너뜀
         vec = ret_vec(ev.strats[k])

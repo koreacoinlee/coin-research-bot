@@ -38,10 +38,11 @@ def _get(url: str, params: dict) -> list:
     return []
 
 
-def fetch_upbit(market: str, interval: str, max_bars: int, since: pd.Timestamp | None = None) -> pd.DataFrame:
-    """최신부터 과거로 200개씩 페이지를 넘기며 수집."""
+def fetch_upbit(market: str, interval: str, max_bars: int, since: pd.Timestamp | None = None,
+                before: pd.Timestamp | None = None) -> pd.DataFrame:
+    """최신부터(또는 before 시점부터) 과거로 200개씩 페이지를 넘기며 수집."""
     url = f"{UPBIT}/{INTERVALS[interval]}"
-    rows, to = [], None
+    rows, to = [], (before.strftime("%Y-%m-%d %H:%M:%S") if before is not None else None)
     while len(rows) < max_bars:
         params = {"market": market, "count": 200}
         if to:
@@ -78,6 +79,12 @@ def load(market: str, interval: str, max_bars: int = 4000, refresh: bool = True)
         since = old["time"].max() if len(old) else None
         new = fetch_upbit(market, interval, max_bars if since is None else 1000, since)
         df = pd.concat([old, new]).drop_duplicates("time", keep="last") if len(old) else new
+        # 과거 데이터가 목표보다 짧으면 더 오래된 구간을 채운다 (상장일까지)
+        if len(old) and len(df) < max_bars and not (DATA_DIR / f".{market}_{interval}.complete").exists():
+            back = fetch_upbit(market, interval, max_bars - len(df), before=df["time"].min())
+            if len(back) < max_bars - len(df):  # 상장일에 닿음 → 다음부터 시도 안 함
+                (DATA_DIR / f".{market}_{interval}.complete").touch()
+            df = pd.concat([back, df]).drop_duplicates("time", keep="last")
         # 아직 마감되지 않은 마지막 캔들은 버린다 (미래 정보 누출 방지)
         now = pd.Timestamp(datetime.now(timezone.utc)).tz_localize(None)
         step = {"1d": pd.Timedelta(days=1), "4h": pd.Timedelta(hours=4), "1h": pd.Timedelta(hours=1)}[interval]

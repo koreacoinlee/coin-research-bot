@@ -6,17 +6,18 @@
     "KRW-SOL"
   ],
   "interval": "4h",
-  "max_bars": 6000,
+  "max_bars": 15000,
   "minutes": 40,
   "population": 120,
   "min_trades_train": 15,
   "min_trades_valid": 8,
   "min_fitness": 0.3,
-  "min_valid_sharpe": 0.6,
-  "candidates_checked": 300,
+  "min_valid_sharpe": 0.3,
+  "candidates_checked": 1000000,
   "max_new_per_day": 3,
   "max_corr": 0.85,
   "hof_size": 20,
   "forward_min_bars": 30,
-  "retire_forward_mdd": -0.35
+  "retire_forward_mdd": -0.35,
+  "min_valid_excess": 0.5
 }
