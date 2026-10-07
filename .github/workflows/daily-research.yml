@@ -2,7 +2,7 @@ name: daily-research
 
 on:
   schedule:
-    - cron: "15 0 * * *"   # 매일 09:15 (한국시간) = 00:15 UTC
+    - cron: "10 */4 * * *"  # 4시간봉 마감 10분 뒤마다 (한국시간 01·05·09·13·17·21시 10분)
   workflow_dispatch:        # Actions 탭에서 수동 실행 버튼
 
 permissions:
@@ -15,7 +15,7 @@ concurrency:
 jobs:
   research:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 55
     steps:
       - uses: actions/checkout@v4
 
@@ -37,5 +37,6 @@ jobs:
           git config user.name "research-bot"
           git config user.email "research-bot@users.noreply.github.com"
           git add results data
-          git commit -m "research: $(TZ=Asia/Seoul date +%F)" || echo "no changes"
+          git commit -m "research: $(TZ=Asia/Seoul date '+%F %H:%M')" || echo "no changes"
+          git pull --rebase -X theirs origin main || true
           git push

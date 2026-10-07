@@ -1,8 +1,13 @@
 {
-  "markets": ["KRW-BTC", "KRW-ETH", "KRW-XRP", "KRW-SOL"],
+  "markets": [
+    "KRW-BTC",
+    "KRW-ETH",
+    "KRW-XRP",
+    "KRW-SOL"
+  ],
   "interval": "4h",
   "max_bars": 6000,
-  "minutes": 25,
+  "minutes": 40,
   "population": 120,
   "min_trades_train": 15,
   "min_trades_valid": 8,
