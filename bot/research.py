@@ -134,9 +134,15 @@ def forward_metrics(ev: Evaluator, s: dict, since: str) -> dict | None:
             return None
         r = bt.run(df, s)[mask]
         per[m] = bt.metrics(r, ev.iv)
+        per[m]["bh"] = float(df["close"].to_numpy()[mask][-1] / df["close"].to_numpy()[~mask][-1] - 1)
+    total = float(np.mean([x["total"] for x in per.values()]))
+    bh = float(np.mean([x["bh"] for x in per.values()]))
     return {
         "bars": int(mask.sum()),
-        "total": float(np.mean([x["total"] for x in per.values()])),
+        "total": total,
+        "bh": bh,                     # 같은 기간 그냥 들고 있었을 때
+        "excess": total - bh,         # 단순 보유 대비 초과 수익
+        "exposure": float(np.mean([x["exposure"] for x in per.values()])),
         "mdd": float(np.median([x["mdd"] for x in per.values()])),
     }
 
@@ -178,6 +184,11 @@ def main():
     ranked = evolve(ev, seeds, cfg, max(budget, 30), log)
 
     # 4) 검증 구간 심사 → 명예의 전당 입성
+    # 하루 입성 한도는 실행 횟수와 무관하게 '날짜' 기준으로 센다 (하루 여러 번 돌아도 과하게 늘지 않게)
+    state_path = RES / "state.json"
+    state = json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {}
+    admitted = state.setdefault("admitted", {})
+    quota = max(0, cfg["max_new_per_day"] - admitted.get(today, 0))
     known = {key(h["strategy"]) for h in hof}
     added = []
     bh_valid = np.median([bt.buy_hold(split(df)[1], cfg["interval"])["sharpe"] for df in frames.values()])
@@ -185,7 +196,7 @@ def main():
         return np.concatenate([bt.run(df, s)[: int(len(df) * 0.8)] for df in frames.values()])
 
     accepted_vecs = [ret_vec(h["strategy"]) for h in hof]
-    for k, res in ranked[: cfg["candidates_checked"]]:
+    for k, res in ranked[: cfg["candidates_checked"]] if quota else []:
         if k in known or res.get("fitness", -99) < cfg["min_fitness"]:
             continue
         v = res["valid"]
@@ -200,7 +211,7 @@ def main():
             continue
         accepted_vecs.append(vec)
         added.append(k)
-        if len(added) >= cfg["max_new_per_day"]:
+        if len(added) >= quota:
             break
 
     for k in added:
@@ -216,7 +227,10 @@ def main():
                 "forward": None,
             }
         )
-    log.append(f"- 새로 명예의 전당 입성: {len(added)}개 (검증 구간 B&H 샤프 {bh_valid:.2f})")
+    admitted[today] = admitted.get(today, 0) + len(added)
+    state["admitted"] = dict(sorted(admitted.items())[-30:])
+    state_path.write_text(json.dumps(state, ensure_ascii=False, indent=1), encoding="utf-8")
+    log.append(f"- 새로 명예의 전당 입성: {len(added)}개 (오늘 누적 {admitted[today]}/{cfg['max_new_per_day']}, 검증 구간 B&H 샤프 {bh_valid:.2f})")
 
     # 5) 정리: 점수순 정렬, 최대 개수 유지. 전진 성과가 크게 망가진 전략은 퇴출.
     def rank_score(h):
@@ -224,16 +238,28 @@ def main():
         score = 0.5 * e["valid"]["sharpe"] + 0.5 * e["train"]["sharpe"]
         f = h.get("forward")
         if f and f["bars"] >= cfg["forward_min_bars"]:
-            score += 0.5 * np.sign(f["total"]) * min(abs(f["total"]) * 5, 1)
+            # 전진 성과는 '같은 기간 단순 보유 대비'로 평가 (하락장에서 현금으로 피한 것도 실력)
+            score += np.sign(f["excess"]) * min(abs(f["excess"]) * 5, 1.5)
         return score
+
+    def matured(h):
+        f = h.get("forward")
+        return bool(f and f["bars"] >= cfg["forward_min_bars"])
 
     retired = [h for h in hof if h.get("forward") and h["forward"]["bars"] >= cfg["forward_min_bars"]
                and h["forward"]["mdd"] < cfg["retire_forward_mdd"]]
     hof = [h for h in hof if h not in retired]
     hof.sort(key=rank_score, reverse=True)
-    if len(hof) > cfg["hof_size"]:
-        retired += hof[cfg["hof_size"]:]
-        hof = hof[: cfg["hof_size"]]
+    # 자리가 부족하면 퇴출. 전진 성과를 아직 충분히 쌓지 못한 전략은 보호하고,
+    # 검증이 끝난 전략 중 점수가 가장 낮은 것부터 내보낸다. 모두 보호 중이면 오늘 들어온 것 중 최하위를 뺀다.
+    while len(hof) > cfg["hof_size"]:
+        pool = [h for h in hof if matured(h)] or [h for h in hof if h["id"] in added] or hof
+        worst = min(pool, key=rank_score)
+        hof.remove(worst)
+        if worst["id"] in added:
+            added.remove(worst["id"])
+        else:
+            retired.append(worst)
     if retired:
         log.append(f"- 퇴출: {', '.join(h['id'] for h in retired)}")
     for h in hof:

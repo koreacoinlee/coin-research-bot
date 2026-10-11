@@ -59,7 +59,8 @@ def write(hof, frames, cfg, log, today, added) -> str:
         f"마지막 업데이트: **{today}** · 대상: {', '.join(frames)} · 봉: {cfg['interval']}",
         "",
         "> 학습(앞 60%)으로만 진화 → 검증(다음 20%)으로 입성 심사 → 시험(마지막 20%)은 보고만. "
-        "'전진'은 전당에 오른 뒤 실제로 새로 쌓인 데이터에서의 성과입니다.",
+        "'전진'은 전당에 오른 뒤 실제로 새로 쌓인 데이터에서의 성과이고, 옆의 '보유'는 같은 기간 그냥 들고 있었을 때입니다. "
+        f"전진 기록이 {cfg['forward_min_bars']}봉 이상 쌓이기 전까지는 퇴출되지 않습니다.",
         "",
         "## 오늘",
         *log[1:],
@@ -71,7 +72,13 @@ def write(hof, frames, cfg, log, today, added) -> str:
     ]
     for i, h in enumerate(hof, 1):
         e, f = h["eval"], h.get("forward")
-        fwd = f"{_pct(f['total'])} ({f['bars']}봉)" if f else "-"
+        if not f:
+            fwd = "-"
+        else:
+            days = f["bars"] * {"1d": 24, "4h": 4, "1h": 1}[cfg["interval"]] / 24
+            state = "관망 중 " if f.get("exposure", 1) == 0 else ""
+            bh = f" / 보유 {_pct(f['bh'])}" if "bh" in f else ""
+            fwd = f"{state}{_pct(f['total'])}{bh} ({days:.1f}일)"
         new = " 🆕" if h["id"] in added else ""
         lines.append(
             f"| {i} | `{h['id']}`{new} | {h['found']} | {e['train']['sharpe']:.2f} | {e['valid']['sharpe']:.2f} | "
