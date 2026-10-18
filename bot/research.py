@@ -250,10 +250,11 @@ def main():
                and h["forward"]["mdd"] < cfg["retire_forward_mdd"]]
     hof = [h for h in hof if h not in retired]
     hof.sort(key=rank_score, reverse=True)
-    # 자리가 부족하면 퇴출. 전진 성과를 아직 충분히 쌓지 못한 전략은 보호하고,
-    # 검증이 끝난 전략 중 점수가 가장 낮은 것부터 내보낸다. 모두 보호 중이면 오늘 들어온 것 중 최하위를 뺀다.
+    # 자리가 부족하면 퇴출. 전진 성과를 쌓는 중인 기존 전략은 보호한다.
+    # 퇴출 후보 = 전진 검증이 끝난 전략 + 이번에 새로 들어온 전략. 이 중 점수가 가장 낮은 것을 내보낸다.
+    # → 신입은 검증을 마친 기존 전략 중 최약체보다 나아야 자리를 차지할 수 있다.
     while len(hof) > cfg["hof_size"]:
-        pool = [h for h in hof if matured(h)] or [h for h in hof if h["id"] in added] or hof
+        pool = [h for h in hof if matured(h) or h["id"] in added] or hof
         worst = min(pool, key=rank_score)
         hof.remove(worst)
         if worst["id"] in added:

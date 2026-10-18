@@ -16,7 +16,7 @@
   "candidates_checked": 1000000,
   "max_new_per_day": 3,
   "max_corr": 0.7,
-  "hof_size": 30,
+  "hof_size": 45,
   "forward_min_bars": 42,
   "retire_forward_mdd": -0.35,
   "min_valid_excess": 0.5
