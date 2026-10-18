@@ -90,6 +90,30 @@ def load(market: str, interval: str, max_bars: int = 4000, refresh: bool = True)
         step = {"1d": pd.Timedelta(days=1), "4h": pd.Timedelta(hours=4), "1h": pd.Timedelta(hours=1)}[interval]
         df = df[df["time"] + step <= now]
         df = df.sort_values("time").tail(max_bars).reset_index(drop=True)
-        df.to_csv(path, index=False)
+        tmp = path.with_suffix(".csv.tmp")
+        df.to_csv(tmp, index=False)
+        tmp.replace(path)  # 쓰다가 끊겨도 기존 파일이 깨지지 않게
         return df
     return old
+
+
+STEP = {"1d": pd.Timedelta(days=1), "4h": pd.Timedelta(hours=4), "1h": pd.Timedelta(hours=1)}
+
+
+def check(df: pd.DataFrame, interval: str) -> list[str]:
+    """시세 데이터 이상 여부 점검. 문제를 문장 목록으로 돌려준다(없으면 빈 목록).
+
+    업비트는 거래가 한 건도 없던 봉은 내려주지 않아 드물게 빈 칸이 생길 수 있다.
+    빈 칸이 아주 적으면 결과에 거의 영향이 없지만, 많아지면 알 수 있게 기록한다.
+    """
+    warns = []
+    if df["time"].duplicated().any():
+        warns.append(f"중복 봉 {int(df['time'].duplicated().sum())}개")
+    gaps = df["time"].diff().dropna()
+    missing = int(((gaps / STEP[interval]).round() - 1).clip(lower=0).sum())
+    if missing / (len(df) + missing) > 0.001:  # 0.1% 넘을 때만 (거래소 점검 등으로 한두 개 빠지는 건 정상)
+        warns.append(f"빠진 봉 {missing}개 (전체의 {missing / (len(df) + missing):.2%})")
+    bad = (df[["open", "high", "low", "close"]] <= 0).any(axis=1) | (df["high"] < df["low"])
+    if bad.any():
+        warns.append(f"가격 이상 봉 {int(bad.sum())}개")
+    return warns

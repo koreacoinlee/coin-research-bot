@@ -20,8 +20,11 @@ import pandas as pd
 
 from . import backtest as bt
 from . import data as dataio
+from . import gates
+from . import hof as H
 from . import report
 from .strategy import crossover, describe, key, mutate, random_strategy
+from .util import atomic_write_json, atomic_write_text, read_json
 
 ROOT = Path(__file__).resolve().parent.parent
 RES = ROOT / "results"
@@ -125,28 +128,6 @@ def evolve(ev: Evaluator, seeds: list[dict], cfg: dict, budget_s: float, log: li
     return sorted(ev.cache.items(), key=lambda kv: kv[1]["fitness"], reverse=True)
 
 
-def forward_metrics(ev: Evaluator, s: dict, since: str) -> dict | None:
-    t0 = pd.Timestamp(since)
-    per = {}
-    for m, df in ev.frames.items():
-        mask = (df["time"] > t0).to_numpy()
-        if mask.sum() < 2:
-            return None
-        r = bt.run(df, s)[mask]
-        per[m] = bt.metrics(r, ev.iv)
-        per[m]["bh"] = float(df["close"].to_numpy()[mask][-1] / df["close"].to_numpy()[~mask][-1] - 1)
-    total = float(np.mean([x["total"] for x in per.values()]))
-    bh = float(np.mean([x["bh"] for x in per.values()]))
-    return {
-        "bars": int(mask.sum()),
-        "total": total,
-        "bh": bh,                     # 같은 기간 그냥 들고 있었을 때
-        "excess": total - bh,         # 단순 보유 대비 초과 수익
-        "exposure": float(np.mean([x["exposure"] for x in per.values()])),
-        "mdd": float(np.median([x["mdd"] for x in per.values()])),
-    }
-
-
 def main():
     cfg = load_config()
     RES.mkdir(exist_ok=True)
@@ -160,6 +141,8 @@ def main():
     for m in cfg["markets"]:
         try:
             df = dataio.load(m, cfg["interval"], cfg["max_bars"], refresh=not cfg.get("offline"))
+            for w in dataio.check(df, cfg["interval"]):
+                log.append(f"- ⚠️ {m} 데이터 점검: {w}")
             if len(df) > 300:
                 frames[m] = df
         except Exception as e:
@@ -171,12 +154,22 @@ def main():
 
     ev = Evaluator(frames, cfg)
     hof_path = RES / "hall_of_fame.json"
-    hof = json.loads(hof_path.read_text(encoding="utf-8")) if hof_path.exists() else []
+    hof = read_json(hof_path, [])
 
-    # 2) 기존 명예의 전당 재평가 (데이터가 하루 늘었으므로)
+    # 2) 기존 명예의 전당 재평가 (데이터가 늘었으므로)
     for h in hof:
         h["eval"] = ev.evaluate(h["strategy"])
-        h["forward"] = forward_metrics(ev, h["strategy"], h["since_bar"])
+        h["forward"] = H.forward_metrics(frames, h["strategy"], h["since_bar"], cfg["interval"])
+
+    # 튼튼함 심사 도입 전에 들어온 전략은 한 번 소급 심사한다 (결과는 졸업 조건에 쓰임)
+    if hof:
+        bh_per0 = gates.bh_valid_sharpes(frames, cfg["interval"])
+        legacy = [h for h in hof if "robustness" not in h or h["robustness"] is None]
+        for h in legacy:
+            h["robustness"] = gates.robustness(frames, h["strategy"], cfg, bh_per0, random.Random(h["id"]))
+        if legacy:
+            ok = sum(h["robustness"]["passed"] for h in legacy)
+            log.append(f"- 기존 전략 튼튼함 소급 심사: {len(legacy)}개 중 {ok}개 통과")
 
     # 3) 진화 — 기존 상위 전략을 씨앗으로
     seeds = [h["strategy"] for h in sorted(hof, key=lambda h: h["eval"]["fitness"], reverse=True)]
@@ -186,12 +179,15 @@ def main():
     # 4) 검증 구간 심사 → 명예의 전당 입성
     # 하루 입성 한도는 실행 횟수와 무관하게 '날짜' 기준으로 센다 (하루 여러 번 돌아도 과하게 늘지 않게)
     state_path = RES / "state.json"
-    state = json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {}
+    state = read_json(state_path, {})
     admitted = state.setdefault("admitted", {})
     quota = max(0, cfg["max_new_per_day"] - admitted.get(today, 0))
     known = {key(h["strategy"]) for h in hof}
     added = []
-    bh_valid = np.median([bt.buy_hold(split(df)[1], cfg["interval"])["sharpe"] for df in frames.values()])
+    bh_per = gates.bh_valid_sharpes(frames, cfg["interval"])
+    bh_valid = float(np.median(list(bh_per.values())))
+    rng = random.Random()
+    robust_tried, robust_fail = 0, {}
     def ret_vec(s):  # 학습+검증 구간 수익률을 이어 붙인 벡터 (시험 구간은 보지 않음)
         return np.concatenate([bt.run(df, s)[: int(len(df) * 0.8)] for df in frames.values()])
 
@@ -209,6 +205,16 @@ def main():
         vec = ret_vec(ev.strats[k])
         if vec.std() == 0 or any(np.corrcoef(vec, w)[0, 1] > cfg["max_corr"] for w in accepted_vecs if w.std() > 0):
             continue
+        # 튼튼함 심사 (이웃 파라미터 / 비용 3배 / 코인 일관성). 비싸서 한 번 실행에 시도 횟수 제한.
+        if robust_tried >= cfg["robustness"]["max_checks"]:
+            break
+        robust_tried += 1
+        rb = gates.robustness(frames, ev.strats[k], cfg, bh_per, rng)
+        if not rb["passed"]:
+            for f in rb["fail"]:
+                robust_fail[f] = robust_fail.get(f, 0) + 1
+            continue
+        res["robustness"] = rb
         accepted_vecs.append(vec)
         added.append(k)
         if len(added) >= quota:
@@ -224,57 +230,43 @@ def main():
                 "strategy": s,
                 "desc": describe(s),
                 "eval": ev.evaluate(s),
+                "robustness": ev.evaluate(s).get("robustness"),
                 "forward": None,
             }
         )
+    fails =", ".join(f"{k} {v}" for k, v in robust_fail.items())
+    log.append(f"- 튼튼함 심사: {robust_tried}개 시도 → {len(added)}개 통과" + (f" (탈락 사유: {fails})" if fails else ""))
+
+    # 5) 정리: 퇴출 규칙은 hof.prune 참고
+    hof, retired, added = H.prune(hof, added, cfg)
     admitted[today] = admitted.get(today, 0) + len(added)
     state["admitted"] = dict(sorted(admitted.items())[-30:])
-    state_path.write_text(json.dumps(state, ensure_ascii=False, indent=1), encoding="utf-8")
     log.append(f"- 새로 명예의 전당 입성: {len(added)}개 (오늘 누적 {admitted[today]}/{cfg['max_new_per_day']}, 검증 구간 B&H 샤프 {bh_valid:.2f})")
-
-    # 5) 정리: 점수순 정렬, 최대 개수 유지. 전진 성과가 크게 망가진 전략은 퇴출.
-    def rank_score(h):
-        e = h["eval"]
-        score = 0.5 * e["valid"]["sharpe"] + 0.5 * e["train"]["sharpe"]
-        f = h.get("forward")
-        if f and f["bars"] >= cfg["forward_min_bars"]:
-            # 전진 성과는 '같은 기간 단순 보유 대비'로 평가 (하락장에서 현금으로 피한 것도 실력)
-            score += np.sign(f["excess"]) * min(abs(f["excess"]) * 5, 1.5)
-        return score
-
-    def matured(h):
-        f = h.get("forward")
-        return bool(f and f["bars"] >= cfg["forward_min_bars"])
-
-    retired = [h for h in hof if h.get("forward") and h["forward"]["bars"] >= cfg["forward_min_bars"]
-               and h["forward"]["mdd"] < cfg["retire_forward_mdd"]]
-    hof = [h for h in hof if h not in retired]
-    hof.sort(key=rank_score, reverse=True)
-    # 자리가 부족하면 퇴출. 전진 성과를 쌓는 중인 기존 전략은 보호한다.
-    # 퇴출 후보 = 전진 검증이 끝난 전략 + 이번에 새로 들어온 전략. 이 중 점수가 가장 낮은 것을 내보낸다.
-    # → 신입은 검증을 마친 기존 전략 중 최약체보다 나아야 자리를 차지할 수 있다.
-    while len(hof) > cfg["hof_size"]:
-        pool = [h for h in hof if matured(h) or h["id"] in added] or hof
-        worst = min(pool, key=rank_score)
-        hof.remove(worst)
-        if worst["id"] in added:
-            added.remove(worst["id"])
-        else:
-            retired.append(worst)
     if retired:
         log.append(f"- 퇴출: {', '.join(h['id'] for h in retired)}")
-    for h in hof:
-        h["rank_score"] = float(rank_score(h))
 
-    hof_path.write_text(json.dumps(hof, ensure_ascii=False, indent=1, default=float), encoding="utf-8")
+    # 졸업 심사: 처음 통과한 날을 기록 (이후 기준에서 벗어나면 리포트에 '보류'로 표시)
+    grads = state.setdefault("graduated", {})
+    new_grads = []
+    for h in hof:
+        h["rank_score"] = H.rank_score(h, cfg)
+        h["graduation"] = H.graduation(h, cfg)
+        if h["graduation"]["passed"] and h["id"] not in grads:
+            grads[h["id"]] = today
+            new_grads.append(h["id"])
+    if new_grads:
+        log.append(f"- 🎓 졸업: {', '.join(new_grads)}")
+
+    atomic_write_json(hof_path, hof)
+    atomic_write_json(state_path, state)
 
     # 6) 보고서
-    summary = report.write(hof, frames, cfg, log, today, added)
+    summary = report.write(hof, frames, cfg, log, today, added, state, new_grads)
     log.append(f"- 소요 {(time.time() - t_start) / 60:.1f}분")
     jp = RES / "journal.md"
     prev = jp.read_text(encoding="utf-8") if jp.exists() else "# 연구 일지\n"
     head, _, rest = prev.partition("\n")
-    jp.write_text(head + "\n\n" + "\n".join(log) + "\n" + rest, encoding="utf-8")
+    atomic_write_text(jp, head + "\n\n" + "\n".join(log) + "\n" + rest)
     report.notify(summary)
     print("\n".join(log))
 

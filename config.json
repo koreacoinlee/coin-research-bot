@@ -19,5 +19,20 @@
   "hof_size": 45,
   "forward_min_bars": 42,
   "retire_forward_mdd": -0.35,
-  "min_valid_excess": 0.5
+  "min_valid_excess": 0.5,
+  "robustness": {
+    "neighbors": 6,
+    "neighbor_scale": 0.15,
+    "neighbor_min_excess": 0.25,
+    "cost_mult": 3,
+    "min_coin_share": 0.75,
+    "max_checks": 80
+  },
+  "graduation": {
+    "min_days": 60,
+    "min_upleg": 0.1,
+    "min_trades": 10,
+    "min_excess": 0.0,
+    "max_mdd": -0.2
+  }
 }

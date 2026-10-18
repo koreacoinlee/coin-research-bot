@@ -16,8 +16,12 @@ SLIPPAGE = 0.0005  # 보수적 가정
 BARS_PER_YEAR = {"1d": 365, "4h": 365 * 6, "1h": 365 * 24}
 
 
-def run(df: pd.DataFrame, s: dict) -> np.ndarray:
-    """봉별 전략 수익률 배열을 돌려준다."""
+def run(df: pd.DataFrame, s: dict, cost: float | None = None, with_pos: bool = False):
+    """봉별 전략 수익률 배열을 돌려준다.
+
+    cost: 한쪽 거래 비용(수수료+슬리피지). None 이면 기본값.
+    with_pos: True 면 (수익률, 봉 마감 시점 보유 여부) 를 함께 돌려준다.
+    """
     o, h, l, c = (df[k].to_numpy(float) for k in ("open", "high", "low", "close"))
     n = len(df)
 
@@ -32,8 +36,9 @@ def run(df: pd.DataFrame, s: dict) -> np.ndarray:
             ex_sigs.append(signal(df, x, EXIT_BLOCKS))
     exit_sig = np.logical_or.reduce(ex_sigs) if ex_sigs else np.zeros(n, bool)
 
-    cost = FEE + SLIPPAGE
+    cost = FEE + SLIPPAGE if cost is None else cost
     rets = np.zeros(n)
+    pos = np.zeros(n, bool)  # t봉 마감 시점에 보유 중이면 True
     in_pos, entry_px, peak, held = False, 0.0, 0.0, 0
     stop, take, trail = s["stop"], s["take"], s["trail"]
 
@@ -65,6 +70,7 @@ def run(df: pd.DataFrame, s: dict) -> np.ndarray:
                 continue
             rets[t] = c[t] / prev - 1
             peak = max(peak, h[t])
+            pos[t] = True
         elif entry[t - 1]:
             entry_px = o[t] * (1 + cost)
             peak = o[t]
@@ -75,10 +81,12 @@ def run(df: pd.DataFrame, s: dict) -> np.ndarray:
             if stop and l[t] <= entry_px * (1 - stop):
                 rets[t] = (entry_px * (1 - stop) * (1 - cost)) / entry_px - 1
                 in_pos = False
-    return rets
+            else:
+                pos[t] = True
+    return (rets, pos) if with_pos else rets
 
 
-def metrics(rets: np.ndarray, interval: str) -> dict:
+def metrics(rets: np.ndarray, interval: str, pos: np.ndarray | None = None) -> dict:
     eq = np.cumprod(1 + rets)
     years = max(len(rets) / BARS_PER_YEAR[interval], 1e-9)
     total = eq[-1] - 1
@@ -86,9 +94,11 @@ def metrics(rets: np.ndarray, interval: str) -> dict:
     sd = rets.std()
     sharpe = rets.mean() / sd * np.sqrt(BARS_PER_YEAR[interval]) if sd > 0 else 0.0
     dd = (eq / np.maximum.accumulate(eq) - 1).min()
-    active = rets != 0
-    # 거래 횟수: 포지션 구간의 시작 수
-    trades = int(np.sum(active[1:] & ~active[:-1]) + active[0])
+    # 보유 구간: 보유 여부를 알면 그걸 쓰고(정확), 모르면 수익률≠0 으로 근사
+    active = (pos | (rets != 0)) if pos is not None else (rets != 0)
+    # 거래 횟수: 보유 구간의 시작 수 (보유 여부를 알면 청산 직후 재진입도 따로 센다)
+    src = pos if pos is not None else active
+    trades = int(np.sum(src[1:] & ~src[:-1]) + src[0])
     return {
         "total": float(total),
         "cagr": float(cagr),

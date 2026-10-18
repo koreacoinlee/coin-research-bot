@@ -26,6 +26,10 @@ jobs:
 
       - run: pip install -r requirements.txt
 
+      # 핵심 규칙 자동 점검. 실패하면 이번 회차 연구를 건너뛰고(결과 파일을 건드리지 않음) 실패로 표시한다.
+      - name: Self-test
+        run: python -m tests.test_core
+
       - name: Research
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
