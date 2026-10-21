@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import random
+import threading
 import time
 import traceback
 from datetime import datetime, timedelta, timezone
@@ -128,6 +129,27 @@ def evolve(ev: Evaluator, seeds: list[dict], cfg: dict, budget_s: float, log: li
     return sorted(ev.cache.items(), key=lambda kv: kv[1]["fitness"], reverse=True)
 
 
+def fetch_with_deadline(market: str, cfg: dict):
+    """새 시세 받기를 별도 스레드에서 돌리고, 제한 시간을 넘기면 포기한다.
+    (DNS 조회처럼 urlopen 의 timeout 이 적용되지 않는 곳에서 멈추는 경우까지 막기 위함)"""
+    box = {}
+
+    def work():
+        try:
+            box["df"] = dataio.load(market, cfg["interval"], cfg["max_bars"], refresh=True)
+        except Exception as e:  # noqa: BLE001
+            box["err"] = e
+
+    th = threading.Thread(target=work, daemon=True)
+    th.start()
+    th.join(cfg.get("fetch_timeout_s", 180))
+    if th.is_alive():
+        raise TimeoutError(f"{cfg.get('fetch_timeout_s', 180)}초 안에 응답 없음")
+    if "err" in box:
+        raise box["err"]
+    return box["df"]
+
+
 def main():
     cfg = load_config()
     RES.mkdir(exist_ok=True)
@@ -139,14 +161,24 @@ def main():
     # 1) 데이터 업데이트
     frames = {}
     for m in cfg["markets"]:
-        try:
-            df = dataio.load(m, cfg["interval"], cfg["max_bars"], refresh=not cfg.get("offline"))
-            for w in dataio.check(df, cfg["interval"]):
-                log.append(f"- ⚠️ {m} 데이터 점검: {w}")
-            if len(df) > 300:
-                frames[m] = df
-        except Exception as e:
-            log.append(f"- ⚠️ {m} 데이터 실패: {e}")
+        df = None
+        if not cfg.get("offline"):
+            # 업비트 응답이 없거나 네트워크가 멈춰도 연구 전체가 날아가지 않게 시간 제한을 두고,
+            # 실패하면 저장돼 있던 시세로 계속 진행한다 (전진 성과만 그 회차에 갱신되지 않음).
+            try:
+                df = fetch_with_deadline(m, cfg)
+            except Exception as e:
+                log.append(f"- ⚠️ {m} 새 시세 받기 실패 → 저장된 시세로 진행 ({type(e).__name__}: {str(e)[:80]})")
+        if df is None:
+            try:
+                df = dataio.load(m, cfg["interval"], cfg["max_bars"], refresh=False)
+            except Exception as e:
+                log.append(f"- ⚠️ {m} 저장된 시세도 읽지 못함: {e}")
+                continue
+        for w in dataio.check(df, cfg["interval"]):
+            log.append(f"- ⚠️ {m} 데이터 점검: {w}")
+        if len(df) > 300:
+            frames[m] = df
     if not frames:
         raise SystemExit("데이터를 하나도 받지 못했습니다.")
     last = max(df["time"].max() for df in frames.values())

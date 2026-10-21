@@ -208,6 +208,34 @@ def test_robustness_runs():
     assert set(r) >= {"passed", "fail", "coins_beating_bh"}
 
 
+def test_fetch_failure_falls_back_to_cache():
+    """업비트가 멈추거나 오류를 내도, 시간 안에 포기하고 저장된 시세로 진행해야 한다."""
+    import time as _t
+    from bot import research as R
+    cfg = {"interval": "4h", "max_bars": 100, "fetch_timeout_s": 1}
+    orig = R.dataio.load
+    try:
+        R.dataio.load = lambda *a, **k: _t.sleep(30)        # 응답 없음
+        t0 = _t.time()
+        try:
+            R.fetch_with_deadline("KRW-X", cfg)
+            raise AssertionError("멈춘 요청이 예외 없이 끝남")
+        except TimeoutError:
+            pass
+        assert _t.time() - t0 < 5, "제한 시간을 넘겨서도 기다림"
+
+        def boom(*a, **k):
+            raise OSError("network down")
+        R.dataio.load = boom
+        try:
+            R.fetch_with_deadline("KRW-X", cfg)
+            raise AssertionError("오류가 전달되지 않음")
+        except OSError:
+            pass
+    finally:
+        R.dataio.load = orig
+
+
 def main():
     tests = [(n, f) for n, f in globals().items() if n.startswith("test_") and callable(f)]
     failed = 0
