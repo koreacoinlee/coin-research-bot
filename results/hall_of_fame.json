@@ -7448,15 +7448,7 @@
      }
     }
    },
-   "fitness": 1.1792083866539322,
-   "robustness": {
-    "passed": true,
-    "coins_beating_bh": "3/4",
-    "cost_stress_sharpe": 1.6113684127611068,
-    "neighbor_median_sharpe": 1.9852110683404638,
-    "bh_valid_sharpe": 1.2327363425298765,
-    "fail": []
-   }
+   "fitness": 1.1792083866539322
   },
   "robustness": {
    "passed": true,

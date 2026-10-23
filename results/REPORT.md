@@ -27,10 +27,9 @@
 
 ## 오늘
 - 데이터: KRW-BTC, KRW-ETH, KRW-XRP, KRW-SOL · 4h · 마지막 봉 2026-10-22 16:00 UTC
-- 1782세대 진화, 전략 93,374개 평가
-- 튼튼함 심사: 4개 시도 → 3개 통과 (탈락 사유: 비용3배 1)
-- 새로 명예의 전당 입성: 1개 (오늘 누적 1/3, 검증 구간 B&H 샤프 1.23)
-- 퇴출: b912bd9098
+- 2660세대 진화, 전략 125,247개 평가
+- 튼튼함 심사: 5개 시도 → 2개 통과 (탈락 사유: 코인일관성 2, 비용3배 1)
+- 새로 명예의 전당 입성: 0개 (오늘 누적 1/3, 검증 구간 B&H 샤프 1.23)
 
 ## 명예의 전당
 
@@ -68,7 +67,7 @@
 | 30 | `6e5115a679` | 2026-10-12 | 1.36 | 1.72 | 0.03 | -1.0% | -25.4% | -0.8% / 보유 -6.6% (11일) | 관망 | 진입: volume_spike(n=53, mult=2.5) AND donchian_break(n=30) AND macd_pos(f=8, s=21, sig=10) | 청산: ma_cross_down(fast=44, slow=176, kind=ema) | 익절 44.7% / 트레일링 9.8% |
 | 31 | `9956c655a7` | 2026-10-18 | 1.65 | 1.98 | 0.95 | +20.0% | -20.0% | 관망 +0.0% / 보유 -1.4% (5일) | 관망 | 진입: donchian_break(n=49) AND volume_spike(n=59, mult=2.83) | 청산: price_below_ma(n=121, kind=ema) | 손절 8.9% / 익절 32.0% |
 | 32 | `b653d79769` | 2026-10-16 | 1.48 | 1.86 | -0.24 | -5.8% | -32.7% | 관망 +0.0% / 보유 -2.7% (7일) | 관망 | 진입: donchian_break(n=17) AND momentum_pos(n=85, th=0.033) | 청산: donchian_low_break(n=33) | 손절 2.4% / 익절 38.5% |
-| 33 | `98920b3d94` 🆕 | 2026-10-23 | 1.51 | 2.10 | 0.76 | +13.5% | -21.1% | - | - | 진입: low_volatility(n=44, q=0.54) AND momentum_pos(n=17, th=0.01) AND volume_spike(n=33, mult=1.68) | 청산: price_below_ma(n=57, kind=sma) OR ma_cross_down(fast=5, slow=109, kind=sma) OR price_below_ma(n=135, kind=ema) | 익절 30.7% |
+| 33 | `98920b3d94` | 2026-10-23 | 1.51 | 2.10 | 0.76 | +13.5% | -21.1% | - | - | 진입: low_volatility(n=44, q=0.54) AND momentum_pos(n=17, th=0.01) AND volume_spike(n=33, mult=1.68) | 청산: price_below_ma(n=57, kind=sma) OR ma_cross_down(fast=5, slow=109, kind=sma) OR price_below_ma(n=135, kind=ema) | 익절 30.7% |
 | 34 | `984a3db347` | 2026-10-21 | 1.24 | 2.31 | 0.96 | +15.0% | -14.2% | 관망 +0.0% / 보유 -2.5% (1일) | 관망 | 진입: volume_spike(n=53, mult=3.87) AND price_above_ma(n=196, kind=sma) | 청산: price_below_ma(n=62, kind=sma) | 손절 3.8% / 익절 12.8% |
 | 35 | `4fe2256c35` | 2026-10-15 | 1.44 | 1.99 | 1.14 | +21.5% | -20.7% | -1.2% / 보유 -2.3% (8일) | XRP | 진입: low_volatility(n=54, q=0.58) AND donchian_break(n=36) | 청산: ma_cross_down(fast=7, slow=29, kind=ema) OR bars_held(n=35) | 손절 13.5% / 익절 46.6% / 트레일링 21.9% |
 | 36 | `8db4842432` | 2026-10-17 | 1.52 | 1.96 | 0.01 | -5.1% | -37.9% | 관망 +0.0% / 보유 -1.2% (6일) | 관망 | 진입: momentum_pos(n=74, th=0.087) | 청산: bars_held(n=48) | 익절 10.1% |
