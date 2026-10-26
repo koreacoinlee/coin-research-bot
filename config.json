@@ -35,5 +35,6 @@
     "min_excess": 0.0,
     "max_mdd": -0.2
   },
-  "fetch_timeout_s": 180
+  "fetch_timeout_s": 180,
+  "admission_max_s": 300
 }

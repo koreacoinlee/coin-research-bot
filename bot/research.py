@@ -224,7 +224,12 @@ def main():
         return np.concatenate([bt.run(df, s)[: int(len(df) * 0.8)] for df in frames.values()])
 
     accepted_vecs = [ret_vec(h["strategy"]) for h in hof]
+    # 입성 심사는 후보가 많으면 오래 걸릴 수 있어 시간 상한을 둔다 (작업 제한 55분 안에 끝나도록)
+    admit_deadline = time.time() + cfg.get("admission_max_s", 300)
     for k, res in ranked[: cfg["candidates_checked"]] if quota else []:
+        if time.time() > admit_deadline:
+            log.append("- 입성 심사 시간 상한 도달 → 나머지 후보는 다음 회차로")
+            break
         if k in known or res.get("fitness", -99) < cfg["min_fitness"]:
             continue
         v = res["valid"]
