@@ -129,6 +129,14 @@ def evolve(ev: Evaluator, seeds: list[dict], cfg: dict, budget_s: float, log: li
     return sorted(ev.cache.items(), key=lambda kv: kv[1]["fitness"], reverse=True)
 
 
+def shape(s: dict) -> str:
+    """전략의 '구조' — 조건 종류와 결합 방식만 남기고 숫자는 뺀 것."""
+    ent = "+".join(sorted(c["type"] for c in s["entry"]))
+    ex = "+".join(sorted(c["type"] for c in s["exit"]))
+    risk = "".join(k[0] for k in ("stop", "take", "trail") if s[k])
+    return f"{s['entry_mode']}:{ent}|{ex}|{risk}"
+
+
 def fetch_with_deadline(market: str, cfg: dict):
     """새 시세 받기를 별도 스레드에서 돌리고, 제한 시간을 넘기면 포기한다.
     (DNS 조회처럼 urlopen 의 timeout 이 적용되지 않는 곳에서 멈추는 경우까지 막기 위함)"""
@@ -203,10 +211,16 @@ def main():
             ok = sum(h["robustness"]["passed"] for h in legacy)
             log.append(f"- 기존 전략 튼튼함 소급 심사: {len(legacy)}개 중 {ok}개 통과")
 
-    # 3) 진화 — 기존 상위 전략을 씨앗으로
+    # 3) 진화 — 두 무리로 나눠서
+    #   ① 기존 전당 전략을 씨앗으로 다듬는 무리 ② 씨앗 없이 처음부터 찾는 무리
+    #   씨앗만 쓰면 전당 전략의 복제품만 쏟아져 새 아이디어가 막힌다 (11월 초 실제로 발생)
     seeds = [h["strategy"] for h in sorted(hof, key=lambda h: h["eval"]["fitness"], reverse=True)]
-    budget = cfg["minutes"] * 60 - (time.time() - t_start) - 60
-    ranked = evolve(ev, seeds, cfg, max(budget, 30), log)
+    budget = max(cfg["minutes"] * 60 - (time.time() - t_start) - 60, 30)
+    fresh_share = cfg.get("fresh_share", 0.5) if seeds else 0.0
+    evolve(ev, seeds, cfg, budget * (1 - fresh_share), log)
+    if fresh_share:
+        evolve(ev, [], cfg, budget * fresh_share, log)
+    ranked = sorted(ev.cache.items(), key=lambda kv: kv[1].get("fitness", -99), reverse=True)
 
     # 4) 검증 구간 심사 → 명예의 전당 입성
     # 하루 입성 한도는 실행 횟수와 무관하게 '날짜' 기준으로 센다 (하루 여러 번 돌아도 과하게 늘지 않게)
@@ -224,6 +238,9 @@ def main():
         return np.concatenate([bt.run(df, s)[: int(len(df) * 0.8)] for df in frames.values()])
 
     accepted_vecs = [ret_vec(h["strategy"]) for h in hof]
+    # 같은 '구조'(진입·청산 조건 종류 조합)의 후보는 몇 개만 중복 검사한다.
+    # 한 계열 변형 수천 개가 심사 시간을 다 써버리는 것을 막는다.
+    per_shape: dict[str, int] = {}
     # 입성 심사는 후보가 많으면 오래 걸릴 수 있어 시간 상한을 둔다 (작업 제한 55분 안에 끝나도록)
     admit_deadline = time.time() + cfg.get("admission_max_s", 300)
     for k, res in ranked[: cfg["candidates_checked"]] if quota else []:
@@ -238,6 +255,10 @@ def main():
         # 검증 구간에서 '그냥 들고 있기'보다 확실히 나아야 함 (상승장·하락장 모두 공정하게 비교)
         if v["sharpe"] < bh_valid + cfg["min_valid_excess"]:
             continue
+        shp = shape(ev.strats[k])
+        if per_shape.get(shp, 0) >= cfg.get("max_per_shape", 3):
+            continue
+        per_shape[shp] = per_shape.get(shp, 0) + 1
         # 이미 있는 전략과 거의 똑같이 움직이면 중복으로 보고 건너뜀
         vec = ret_vec(ev.strats[k])
         if vec.std() == 0 or any(np.corrcoef(vec, w)[0, 1] > cfg["max_corr"] for w in accepted_vecs if w.std() > 0):
@@ -283,10 +304,11 @@ def main():
         log.append(f"- 퇴출: {', '.join(h['id'] for h in retired)}")
 
     # 졸업 심사: 처음 통과한 날을 기록 (이후 기준에서 벗어나면 리포트에 '보류'로 표시)
+    ref = H.forward_ref(hof, cfg)
     grads = state.setdefault("graduated", {})
     new_grads = []
     for h in hof:
-        h["rank_score"] = H.rank_score(h, cfg)
+        h["rank_score"] = H.rank_score(h, cfg, ref)
         h["graduation"] = H.graduation(h, cfg)
         if h["graduation"]["passed"] and h["id"] not in grads:
             grads[h["id"]] = today

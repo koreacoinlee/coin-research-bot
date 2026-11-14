@@ -57,13 +57,22 @@ def matured(h: dict, cfg: dict) -> bool:
     return bool(f and f["bars"] >= cfg["forward_min_bars"])
 
 
-def rank_score(h: dict, cfg: dict) -> float:
+def forward_ref(hof: list[dict], cfg: dict) -> float:
+    """전진 성과 비교 기준 = 검증을 마친 전당 전략들의 '보유 대비' 중앙값.
+
+    폭락장에서는 현금으로 있던 전략 모두가 보유 대비 +20%p 같은 큰 점수를 받는다.
+    이건 실력보다 시장 탓이라, 그대로 쓰면 신입이 절대 기존 전략을 못 이겨 전당이 굳어버린다.
+    중앙값을 빼면 시장 효과는 사라지고 '다른 전략들보다 얼마나 나았나'만 남는다."""
+    xs = [h["forward"]["excess"] for h in hof if matured(h, cfg)]
+    return float(np.median(xs)) if xs else 0.0
+
+
+def rank_score(h: dict, cfg: dict, ref: float = 0.0) -> float:
     e = h["eval"]
     score = 0.5 * e["valid"]["sharpe"] + 0.5 * e["train"]["sharpe"]
     if matured(h, cfg):
-        f = h["forward"]
-        # 전진 성과는 '같은 기간 단순 보유 대비' (하락장에서 현금으로 피한 것도 실력으로 인정)
-        score += float(np.sign(f["excess"]) * min(abs(f["excess"]) * 5, 1.5))
+        rel = h["forward"]["excess"] - ref
+        score += float(np.sign(rel) * min(abs(rel) * 5, 1.0))
     return float(score)
 
 
@@ -79,15 +88,16 @@ def prune(hof: list[dict], added: list[str], cfg: dict) -> tuple[list[dict], lis
     added = list(added)
     retired = [h for h in hof if matured(h, cfg) and h["forward"]["mdd"] < cfg["retire_forward_mdd"]]
     keep = [h for h in hof if h not in retired]
+    ref = forward_ref(keep, cfg)
     while len(keep) > cfg["hof_size"]:
         pool = [h for h in keep if matured(h, cfg) or h["id"] in added] or keep
-        worst = min(pool, key=lambda h: rank_score(h, cfg))
+        worst = min(pool, key=lambda h: rank_score(h, cfg, ref))
         keep.remove(worst)
         if worst["id"] in added:
             added.remove(worst["id"])
         else:
             retired.append(worst)
-    keep.sort(key=lambda h: rank_score(h, cfg), reverse=True)
+    keep.sort(key=lambda h: rank_score(h, cfg, ref), reverse=True)
     return keep, retired, added
 
 

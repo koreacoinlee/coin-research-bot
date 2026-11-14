@@ -36,5 +36,7 @@
     "max_mdd": -0.2
   },
   "fetch_timeout_s": 180,
-  "admission_max_s": 300
+  "admission_max_s": 300,
+  "fresh_share": 0.5,
+  "max_per_shape": 3
 }

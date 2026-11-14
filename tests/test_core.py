@@ -158,6 +158,17 @@ def test_newcomer_beats_weak_matured():
     assert [h["id"] for h in retired] == ["old_weak"] and added == ["new"]
 
 
+def test_crash_does_not_lock_hall():
+    """폭락장에서 '현금으로 피한' 기존 전략들이 큰 보유 대비 점수를 받아도, 더 나은 신입이 들어올 수 있어야 한다."""
+    hof = [entry(f"cash{i}", 1.0, 50, excess=0.20 + i * 0.001) for i in range(5)] + [entry("new", 1.6)]
+    keep, retired, added = H.prune(hof, ["new"], CFG)
+    assert added == ["new"] and len(retired) == 1, (added, [h["id"] for h in retired])
+    # 반대로 실제로 다른 전략보다 앞선 전략은 지켜져야 한다
+    hof = [entry(f"cash{i}", 1.0, 50, excess=0.20) for i in range(4)] + [entry("star", 1.0, 50, excess=0.40), entry("new", 1.6)]
+    keep, retired, added = H.prune(hof, ["new"], CFG)
+    assert "star" in {h["id"] for h in keep}
+
+
 def test_drawdown_retirement_only_after_maturity():
     hof = [entry("bad_mature", 3, 50, mdd=-0.5), entry("bad_young", 3, 10, mdd=-0.5)]
     keep, retired, _ = H.prune(hof, [], CFG)
@@ -234,6 +245,19 @@ def test_fetch_failure_falls_back_to_cache():
             pass
     finally:
         R.dataio.load = orig
+
+
+def test_shape_ignores_numbers_only():
+    from bot.research import shape
+    random.seed(7)
+    s = random_strategy()
+    p = gates.perturb(s, 0.15, random.Random(7))
+    assert shape(s) == shape(p), "숫자만 바꿨는데 구조가 다르게 나옴"
+    q = copy.deepcopy(s)
+    q["entry"] = [{"type": "rsi_below", "n": 14, "th": 30}]
+    q["entry_mode"] = "and"
+    if [c["type"] for c in s["entry"]] != ["rsi_below"]:
+        assert shape(q) != shape(s), "조건 종류가 바뀌었는데 같은 구조로 봄"
 
 
 def main():
