@@ -1,6 +1,6 @@
 # 🤖 코인 전략 연구 리포트
 
-마지막 업데이트: **2026-11-24** · 대상: KRW-BTC, KRW-ETH, KRW-XRP, KRW-SOL · 봉: 4h
+마지막 업데이트: **2026-11-25** · 대상: KRW-BTC, KRW-ETH, KRW-XRP, KRW-SOL · 봉: 4h
 
 ## 🎓 졸업 심사
 
@@ -12,77 +12,78 @@
 
 | ID | 전진 기간 | 상승장 경험 | 실제 거래 | 보유 대비 | 최대 낙폭 | 튼튼함 | 통과 |
 |---|---|---|---|---|---|---|---|
-| `20fa805145` | ⬜ 48일 | ✅ 11% | ✅ 10회 | ✅ +30.5%p | ✅ -6% | ✅ 통과 | 5/6 |
-| `cdcac84052` | ⬜ 47일 | ✅ 11% | ✅ 18회 | ✅ +27.9%p | ✅ -7% | ✅ 통과 | 5/6 |
-| `7ba6000391` | ⬜ 46일 | ✅ 11% | ✅ 11회 | ✅ +30.7%p | ✅ -7% | ✅ 통과 | 5/6 |
-| `cba03c6a1a` | ⬜ 46일 | ✅ 11% | ✅ 12회 | ✅ +27.5%p | ✅ -9% | ✅ 통과 | 5/6 |
-| `fd1c453679` | ⬜ 46일 | ✅ 11% | ✅ 14회 | ✅ +24.9%p | ✅ -9% | ✅ 통과 | 5/6 |
-| `08a39b7267` | ⬜ 46일 | ✅ 11% | ✅ 10회 | ✅ +24.6%p | ✅ -11% | ✅ 통과 | 5/6 |
-| `d7fb6c9904` | ⬜ 45일 | ✅ 11% | ✅ 13회 | ✅ +25.9%p | ✅ -9% | ✅ 통과 | 5/6 |
-| `f7e00c6fe8` | ⬜ 48일 | ✅ 11% | ⬜ 0회 | ✅ +34.0%p | ✅ 0% | ✅ 통과 | 4/6 |
+| `20fa805145` | ⬜ 48일 | ✅ 11% | ✅ 10회 | ✅ +31.4%p | ✅ -6% | ✅ 통과 | 5/6 |
+| `cdcac84052` | ⬜ 48일 | ✅ 11% | ✅ 18회 | ✅ +28.8%p | ✅ -7% | ✅ 통과 | 5/6 |
+| `7ba6000391` | ⬜ 47일 | ✅ 11% | ✅ 11회 | ✅ +31.6%p | ✅ -7% | ✅ 통과 | 5/6 |
+| `cba03c6a1a` | ⬜ 47일 | ✅ 11% | ✅ 12회 | ✅ +28.4%p | ✅ -9% | ✅ 통과 | 5/6 |
+| `fd1c453679` | ⬜ 46일 | ✅ 11% | ✅ 14회 | ✅ +25.8%p | ✅ -9% | ✅ 통과 | 5/6 |
+| `08a39b7267` | ⬜ 46일 | ✅ 11% | ✅ 10회 | ✅ +25.5%p | ✅ -11% | ✅ 통과 | 5/6 |
+| `d7fb6c9904` | ⬜ 45일 | ✅ 11% | ✅ 13회 | ✅ +26.7%p | ✅ -9% | ✅ 통과 | 5/6 |
+| `f7e00c6fe8` | ⬜ 48일 | ✅ 11% | ⬜ 0회 | ✅ +34.8%p | ✅ 0% | ✅ 통과 | 4/6 |
 
 ## 📡 지금 보유 신호
 
-전당 전략 45개 중 현재 코인을 들고 있는 전략: **XRP 3개 · SOL 2개 · ETH 1개**
+전당 전략 45개 중 현재 코인을 들고 있는 전략: **XRP 1개 · SOL 1개**
 
 ## 오늘
-- 데이터: KRW-BTC, KRW-ETH, KRW-XRP, KRW-SOL · 4h · 마지막 봉 2026-11-24 08:00 UTC
-- 699세대 진화, 전략 35,685개 평가
-- 529세대 진화, 전략 70,993개 평가
-- 튼튼함 심사: 0개 시도 → 0개 통과
-- 새로 명예의 전당 입성: 0개 (오늘 누적 3/3, 검증 구간 B&H 샤프 0.71)
+- 데이터: KRW-BTC, KRW-ETH, KRW-XRP, KRW-SOL · 4h · 마지막 봉 2026-11-24 20:00 UTC
+- 1042세대 진화, 전략 56,416개 평가
+- 1166세대 진화, 전략 105,032개 평가
+- 튼튼함 심사: 5개 시도 → 3개 통과 (탈락 사유: 비용3배 1, 코인일관성 1)
+- 새로 명예의 전당 입성: 3개 (오늘 누적 3/3, 검증 구간 B&H 샤프 0.67)
+- 퇴출: 52be14e05e, d6558d3b8c, 600be275ef
 
 ## 명예의 전당
 
 | # | ID | 발견일 | 학습 샤프 | 검증 샤프 | 시험 샤프 | 시험 CAGR | 시험 MDD | 전진 수익 / 같은 기간 보유 | 지금 | 전략 |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 1 | `f7e00c6fe8` | 2026-10-08 | 1.89 | 1.94 | 1.01 | +17.4% | -22.0% | 관망 +0.0% / 보유 -34.0% (48일) | 관망 | 진입: donchian_break(n=71) AND price_above_ma(n=197, kind=sma) | 청산: price_below_ma(n=22, kind=ema) | 손절 19.1% / 익절 27.3% / 트레일링 24.5% |
-| 2 | `f00b4a37e3` | 2026-10-08 | 2.03 | 1.70 | 0.71 | +12.8% | -29.2% | 관망 +0.0% / 보유 -34.0% (48일) | 관망 | 진입: donchian_break(n=66) AND price_above_ma(n=197, kind=sma) AND volume_spike(n=44, mult=1.334) | 청산: price_below_ma(n=55, kind=sma) OR ma_cross_down(fast=8, slow=102, kind=sma) | 익절 27.3% |
-| 3 | `3e0a3dbb31` | 2026-10-11 | 2.13 | 2.04 | 0.65 | +8.9% | -16.1% | -4.6% / 보유 -32.2% (45일) | 관망 | 진입: volume_spike(n=26, mult=3.63) AND momentum_pos(n=17, th=0.01) | 청산: price_below_ma(n=57, kind=sma) OR ma_cross_down(fast=5, slow=109, kind=sma) OR price_below_ma(n=135, kind=ema) | 익절 30.7% |
-| 4 | `20fa805145` | 2026-10-08 | 1.90 | 1.98 | 0.70 | +9.9% | -18.9% | -3.5% / 보유 -34.0% (48일) | 관망 | 진입: macd_pos(f=16, s=21, sig=7) AND volume_spike(n=37, mult=3.51) | 청산: price_below_ma(n=55, kind=sma) OR ma_cross_down(fast=8, slow=102, kind=sma) | 익절 27.3% |
-| 5 | `7ba6000391` | 2026-10-09 | 1.83 | 1.99 | 0.63 | +14.3% | -15.9% | -1.6% / 보유 -32.3% (46일) | 관망 | 진입: donchian_break(n=26) | 청산: price_below_ma(n=15, kind=sma) OR ma_cross_down(fast=8, slow=102, kind=sma) | 익절 27.1% / 트레일링 21.4% |
-| 6 | `cba03c6a1a` | 2026-10-09 | 1.78 | 2.31 | 0.43 | +7.3% | -19.4% | -4.8% / 보유 -32.3% (46일) | 관망 | 진입: macd_pos(f=16, s=21, sig=7) AND volume_spike(n=32, mult=3.51) | 청산: ma_cross_down(fast=8, slow=102, kind=sma) | 익절 27.3% |
-| 7 | `5ade91c3ae` | 2026-10-13 | 1.80 | 1.88 | 1.16 | +22.6% | -12.1% | 관망 +0.0% / 보유 -31.1% (43일) | 관망 | 진입: volume_spike(n=34, mult=3.53) AND donchian_break(n=83) | 청산: price_below_ma(n=139, kind=ema) OR donchian_low_break(n=18) | 손절 9.5% / 익절 32.2% |
-| 8 | `ae82267119` | 2026-10-09 | 1.86 | 1.74 | 0.71 | +9.9% | -17.9% | 관망 +0.0% / 보유 -31.5% (47일) | 관망 | 진입: price_above_ma(n=169, kind=ema) AND volume_spike(n=35, mult=3.62) | 청산: price_below_ma(n=56, kind=sma) | 익절 38.6% |
-| 9 | `4f7cd897f0` | 2026-10-10 | 2.27 | 1.72 | 0.42 | +6.9% | -23.9% | -5.5% / 보유 -31.9% (45일) | 관망 | 진입: volume_spike(n=15, mult=3.025) AND momentum_pos(n=17, th=0.01) | 청산: price_below_ma(n=57, kind=sma) OR ma_cross_down(fast=5, slow=109, kind=sma) OR price_below_ma(n=135, kind=ema) | 손절 20.4% / 익절 29.1% |
-| 10 | `6f3685817a` | 2026-10-10 | 1.87 | 1.55 | 0.61 | +9.1% | -16.9% | 관망 +0.0% / 보유 -32.0% (45일) | 관망 | 진입: volume_spike(n=15, mult=3.025) AND momentum_pos(n=17, th=0.01) AND ma_cross_up(fast=13, slow=154, kind=sma) | 청산: price_below_ma(n=57, kind=sma) OR ma_cross_down(fast=5, slow=109, kind=sma) OR price_below_ma(n=135, kind=ema) | 익절 30.7% |
-| 11 | `cdcac84052` | 2026-10-09 | 1.80 | 1.99 | 0.16 | +3.8% | -21.9% | -4.8% / 보유 -32.7% (47일) | 관망 | 진입: price_above_ma(n=26, kind=ema) AND volume_spike(n=28, mult=2.52) | 청산: price_below_ma(n=55, kind=sma) OR ma_cross_down(fast=8, slow=99, kind=sma) | 손절 14.3% / 익절 27.3% / 트레일링 21.4% |
-| 12 | `d7fb6c9904` | 2026-10-11 | 1.96 | 1.98 | 0.14 | +0.6% | -27.2% | -6.3% / 보유 -32.2% (45일) | 관망 | 진입: volume_spike(n=15, mult=2.369) AND momentum_pos(n=17, th=0.01) | 청산: price_below_ma(n=57, kind=sma) OR ma_cross_down(fast=5, slow=109, kind=sma) OR price_below_ma(n=135, kind=ema) | 익절 41.1% |
-| 13 | `43ba22956d` | 2026-11-23 | 2.32 | 1.41 | 0.28 | +5.6% | -19.6% | 관망 +0.0% / 보유 -0.2% (2일) | 관망 | 진입: macd_pos(f=3, s=29, sig=16) AND ma_cross_up(fast=36, slow=112, kind=ema) AND ma_cross_up(fast=5, slow=23, kind=ema) | 청산: donchian_low_break(n=9) OR rsi_above(n=25, th=79) OR bars_held(n=21) | 익절 30.4% |
-| 14 | `114ad67d25` | 2026-10-11 | 1.99 | 1.78 | 0.10 | -0.4% | -27.4% | -5.1% / 보유 -32.2% (45일) | 관망 | 진입: volume_spike(n=20, mult=3.069) AND momentum_pos(n=17, th=0.01) | 청산: price_below_ma(n=142, kind=sma) OR ma_cross_down(fast=5, slow=109, kind=sma) OR price_below_ma(n=135, kind=ema) | 손절 20.4% / 익절 29.1% |
-| 15 | `b12dd3fbc7` | 2026-10-09 | 1.79 | 1.68 | 0.44 | +5.4% | -30.1% | -2.9% / 보유 -32.7% (47일) | 관망 | 진입: donchian_break(n=52) | 청산: price_below_ma(n=42, kind=sma) OR donchian_low_break(n=53) | 익절 33.6% |
-| 16 | `2439726ead` | 2026-10-08 | 1.66 | 2.00 | 0.18 | +1.9% | -23.7% | -5.9% / 보유 -33.7% (48일) | 관망 | 진입: donchian_break(n=12) AND volume_spike(n=24, mult=2.89) | 청산: price_below_ma(n=116, kind=sma) |
-| 17 | `4ca2bafdac` | 2026-10-27 | 1.49 | 2.33 | 0.65 | +10.8% | -18.9% | 관망 +0.0% / 보유 -25.9% (29일) | 관망 | 진입: donchian_break(n=86) OR drawdown_from_high(n=21, th=0.19) | 청산: donchian_low_break(n=27) OR price_below_ma(n=30, kind=ema) | 익절 6.2% |
-| 18 | `fd1c453679` | 2026-10-10 | 2.02 | 1.90 | 0.31 | +4.5% | -23.3% | -6.6% / 보유 -31.5% (46일) | 관망 | 진입: volume_spike(n=20, mult=1.54) AND volume_spike(n=15, mult=2.715) AND price_above_ma(n=16, kind=sma) | 청산: price_below_ma(n=55, kind=sma) OR ma_cross_down(fast=8, slow=78, kind=sma) | 익절 27.3% |
-| 19 | `6335aeebf2` | 2026-10-10 | 2.02 | 1.71 | 0.28 | +3.7% | -23.9% | -5.5% / 보유 -32.0% (45일) | 관망 | 진입: volume_spike(n=15, mult=3.025) AND momentum_pos(n=17, th=0.01) | 청산: price_below_ma(n=57, kind=sma) OR ma_cross_down(fast=5, slow=109, kind=sma) OR price_below_ma(n=135, kind=ema) |
-| 20 | `88b03c3bd9` | 2026-10-09 | 1.82 | 1.45 | -0.10 | -2.8% | -23.4% | -1.2% / 보유 -32.3% (46일) | 관망 | 진입: low_volatility(n=43, q=0.24) AND donchian_break(n=16) | 청산: price_below_ma(n=39, kind=ema) | 손절 12.0% / 익절 27.3% |
-| 21 | `030e70f004` | 2026-10-10 | 2.05 | 1.50 | -0.03 | -2.0% | -20.9% | -4.2% / 보유 -32.0% (45일) | 관망 | 진입: volume_spike(n=15, mult=3.025) AND momentum_pos(n=17, th=0.01) | 청산: price_below_ma(n=57, kind=sma) OR ma_cross_down(fast=47, slow=239, kind=sma) OR donchian_low_break(n=46) | 익절 29.1% |
-| 22 | `fa158e2ae7` | 2026-11-21 | 1.92 | 1.65 | 0.02 | -1.8% | -20.8% | -1.5% / 보유 +1.7% (4일) | XRP | 진입: volume_spike(n=19, mult=3.625) AND price_above_ma(n=18, kind=sma) | 청산: bars_held(n=38) OR donchian_low_break(n=21) | 손절 29.2% / 익절 30.0% / 트레일링 26.3% |
-| 23 | `ed518e2f80` | 2026-10-11 | 1.97 | 1.63 | 0.25 | +3.3% | -22.1% | -5.8% / 보유 -32.2% (45일) | 관망 | 진입: volume_spike(n=12, mult=3.069) AND momentum_pos(n=17, th=0.01) | 청산: ma_cross_down(fast=5, slow=108, kind=sma) OR price_below_ma(n=135, kind=ema) | 손절 20.4% / 익절 29.1% |
-| 24 | `848c7af378` | 2026-11-20 | 1.71 | 1.72 | 0.55 | +8.7% | -21.8% | 관망 +0.0% / 보유 -2.5% (4일) | 관망 | 진입: price_above_ma(n=76, kind=sma) AND macd_pos(f=7, s=26, sig=7) AND low_volatility(n=44, q=0.5) | 청산: price_below_ma(n=22, kind=ema) | 익절 28.0% / 트레일링 27.7% |
-| 25 | `84fcd77045` | 2026-10-12 | 1.42 | 1.81 | 0.20 | +1.8% | -12.2% | -3.9% / 보유 -32.3% (44일) | 관망 | 진입: volume_spike(n=15, mult=3.069) AND momentum_pos(n=17, th=0.01) AND volume_spike(n=10, mult=2.61) | 청산: bars_held(n=12) OR ma_cross_down(fast=6, slow=109, kind=sma) | 손절 28.0% / 익절 29.1% / 트레일링 28.7% |
-| 26 | `c1fa33b98e` | 2026-11-21 | 1.78 | 1.53 | 1.01 | +14.4% | -17.5% | 관망 +0.0% / 보유 +1.7% (4일) | 관망 | 진입: volume_spike(n=26, mult=3.619) AND low_volatility(n=45, q=0.64) | 청산: price_below_ma(n=55, kind=sma) | 손절 22.7% / 익절 30.0% |
-| 27 | `08a39b7267` | 2026-10-10 | 1.99 | 1.62 | 0.08 | +0.1% | -21.2% | -6.9% / 보유 -31.5% (46일) | 관망 | 진입: macd_pos(f=14, s=21, sig=7) AND volume_spike(n=29, mult=3.51) | 청산: price_below_ma(n=51, kind=sma) | 익절 60.8% |
-| 28 | `481633c95e` | 2026-11-24 | 2.05 | 1.25 | 0.07 | -0.5% | -19.0% | 관망 +0.0% / 보유 -1.3% (0일) | 관망 | 진입: macd_pos(f=23, s=54, sig=12) AND volume_spike(n=19, mult=3.152) AND price_above_ma(n=232, kind=ema) | 청산: price_below_ma(n=56, kind=sma) OR ma_cross_down(fast=51, slow=150, kind=sma) | 익절 46.7% / 트레일링 9.4% |
-| 29 | `3504da9518` | 2026-11-20 | 1.19 | 2.11 | 1.17 | +15.3% | -12.0% | 관망 +0.0% / 보유 -3.1% (5일) | 관망 | 진입: donchian_break(n=90) AND volume_spike(n=55, mult=3.84) | 청산: bars_held(n=40) | 손절 4.6% |
-| 30 | `3ec1452b69` | 2026-11-21 | 1.77 | 1.52 | 0.74 | +13.4% | -21.2% | 관망 +0.0% / 보유 +1.7% (4일) | 관망 | 진입: low_volatility(n=36, q=0.56) AND momentum_pos(n=17, th=0.008) AND volume_spike(n=10, mult=2.599) | 청산: price_below_ma(n=58, kind=sma) OR ma_cross_down(fast=6, slow=107, kind=sma) OR price_below_ma(n=135, kind=ema) | 손절 21.3% / 익절 29.1% |
-| 31 | `5b8f9bc24f` | 2026-11-18 | 1.34 | 1.93 | 0.58 | +10.2% | -16.0% | 관망 +0.0% / 보유 -5.0% (6일) | 관망 | 진입: donchian_break(n=90) OR drawdown_from_high(n=23, th=0.168) | 청산: price_below_ma(n=18, kind=sma) OR bars_held(n=38) |
-| 32 | `404256e1c1` | 2026-11-24 | 1.68 | 1.58 | 0.72 | +12.8% | -16.8% | 관망 +0.0% / 보유 -1.3% (0일) | 관망 | 진입: macd_pos(f=17, s=34, sig=6) AND volume_spike(n=44, mult=1.39) AND ma_cross_up(fast=47, slow=187, kind=ema) | 청산: bars_held(n=13) OR price_below_ma(n=17, kind=ema) |
-| 33 | `c2aebfdff3` | 2026-11-19 | 1.37 | 1.88 | 0.29 | +3.1% | -17.7% | 관망 +0.0% / 보유 -3.7% (6일) | 관망 | 진입: price_above_ma(n=117, kind=sma) AND volume_spike(n=11, mult=3.41) | 청산: price_below_ma(n=119, kind=sma) OR bars_held(n=39) | 손절 10.9% |
-| 34 | `51e55b9c84` | 2026-10-26 | 1.55 | 1.93 | 1.45 | +16.8% | -7.7% | -1.5% / 보유 -26.5% (30일) | SOL | 진입: volume_spike(n=14, mult=3.68) AND donchian_break(n=51) | 청산: bars_held(n=35) | 손절 12.9% / 익절 40.4% / 트레일링 26.8% |
-| 35 | `4414a03b38` | 2026-11-19 | 1.61 | 1.58 | 0.07 | -0.9% | -23.8% | -2.6% / 보유 -3.7% (6일) | 관망 | 진입: volume_spike(n=57, mult=3.68) AND macd_pos(f=10, s=50, sig=6) | 청산: ma_cross_down(fast=20, slow=88, kind=ema) | 트레일링 10.0% |
-| 36 | `f1611a53cb` | 2026-11-23 | 1.56 | 1.63 | -0.40 | -10.2% | -34.1% | -5.1% / 보유 -0.2% (2일) | XRP | 진입: macd_pos(f=3, s=29, sig=15) AND volume_spike(n=10, mult=1.78) | 청산: price_below_ma(n=16, kind=sma) OR rsi_above(n=25, th=79) | 익절 25.6% |
-| 37 | `1c5674c6d8` | 2026-11-19 | 1.66 | 1.45 | 0.55 | +9.9% | -15.0% | 관망 +0.0% / 보유 -3.7% (6일) | 관망 | 진입: donchian_break(n=36) AND low_volatility(n=17, q=0.55) | 청산: price_below_ma(n=22, kind=ema) |
-| 38 | `c8693cdfa2` | 2026-11-24 | 1.76 | 1.32 | 0.12 | +0.6% | -15.8% | 관망 +0.0% / 보유 -1.3% (0일) | 관망 | 진입: macd_pos(f=21, s=26, sig=12) AND volume_spike(n=20, mult=3.173) AND donchian_break(n=58) | 청산: price_below_ma(n=58, kind=sma) OR ma_cross_down(fast=51, slow=150, kind=sma) OR donchian_low_break(n=19) | 익절 46.7% / 트레일링 20.7% |
-| 39 | `efc7382834` | 2026-11-23 | 1.61 | 1.42 | 0.82 | +14.9% | -14.6% | 관망 +0.0% / 보유 -0.2% (2일) | 관망 | 진입: low_volatility(n=31, q=0.43) AND donchian_break(n=30) AND ma_cross_up(fast=23, slow=138, kind=sma) | 청산: price_below_ma(n=70, kind=sma) OR price_below_ma(n=33, kind=ema) | 트레일링 27.4% |
-| 40 | `88108241f6` | 2026-11-22 | 1.71 | 1.30 | 0.94 | +16.3% | -20.3% | 관망 +0.0% / 보유 -0.2% (3일) | 관망 | 진입: donchian_break(n=27) AND low_volatility(n=59, q=0.29) | 청산: ma_cross_down(fast=39, slow=61, kind=ema) OR price_below_ma(n=54, kind=sma) | 손절 16.0% / 익절 52.7% |
-| 41 | `427e33e785` | 2026-11-22 | 1.52 | 1.36 | 0.42 | +9.2% | -26.5% | -5.1% / 보유 -0.2% (3일) | ETH·XRP·SOL | 진입: volume_spike(n=37, mult=2.16) AND macd_pos(f=7, s=44, sig=15) | 청산: bars_held(n=20) OR price_below_ma(n=22, kind=sma) | 익절 7.9% / 트레일링 17.2% |
-| 42 | `4d4d21ab4f` | 2026-11-22 | 1.19 | 1.54 | 0.97 | +16.9% | -16.5% | 관망 +0.0% / 보유 -0.2% (3일) | 관망 | 진입: donchian_break(n=86) AND volume_spike(n=53, mult=2.4) | 청산: donchian_low_break(n=23) | 손절 3.9% / 익절 29.7% / 트레일링 19.1% |
-| 43 | `600be275ef` | 2026-11-15 | 2.04 | 1.57 | 0.27 | +3.7% | -20.6% | 관망 +0.0% / 보유 -6.7% (10일) | 관망 | 진입: donchian_break(n=18) AND ma_cross_up(fast=3, slow=205, kind=ema) AND low_volatility(n=33, q=0.5) | 청산: price_below_ma(n=16, kind=sma) OR bars_held(n=49) | 손절 19.1% / 익절 59.3% / 트레일링 38.5% |
-| 44 | `d6558d3b8c` | 2026-11-14 | 1.48 | 1.99 | 0.62 | +10.3% | -17.6% | 관망 +0.0% / 보유 -8.3% (10일) | 관망 | 진입: momentum_pos(n=78, th=0.049) AND volume_spike(n=52, mult=3.98) | 청산: ma_cross_down(fast=15, slow=99, kind=sma) OR bars_held(n=43) | 손절 6.8% / 익절 28.9% |
-| 45 | `52be14e05e` | 2026-11-17 | 1.65 | 1.64 | 0.61 | +11.6% | -23.1% | 관망 +0.0% / 보유 -4.3% (8일) | 관망 | 진입: volume_spike(n=30, mult=2.42) AND low_volatility(n=36, q=0.26) | 청산: price_below_ma(n=29, kind=ema) | 손절 17.1% |
+| 1 | `f7e00c6fe8` | 2026-10-08 | 1.90 | 1.80 | 1.03 | +18.2% | -22.0% | 관망 +0.0% / 보유 -34.8% (48일) | 관망 | 진입: donchian_break(n=71) AND price_above_ma(n=197, kind=sma) | 청산: price_below_ma(n=22, kind=ema) | 손절 19.1% / 익절 27.3% / 트레일링 24.5% |
+| 2 | `f00b4a37e3` | 2026-10-08 | 2.05 | 1.55 | 0.71 | +12.8% | -29.2% | 관망 +0.0% / 보유 -34.8% (48일) | 관망 | 진입: donchian_break(n=66) AND price_above_ma(n=197, kind=sma) AND volume_spike(n=44, mult=1.334) | 청산: price_below_ma(n=55, kind=sma) OR ma_cross_down(fast=8, slow=102, kind=sma) | 익절 27.3% |
+| 3 | `3e0a3dbb31` | 2026-10-11 | 2.15 | 1.96 | 0.65 | +9.0% | -16.1% | -4.6% / 보유 -33.1% (45일) | 관망 | 진입: volume_spike(n=26, mult=3.63) AND momentum_pos(n=17, th=0.01) | 청산: price_below_ma(n=57, kind=sma) OR ma_cross_down(fast=5, slow=109, kind=sma) OR price_below_ma(n=135, kind=ema) | 익절 30.7% |
+| 4 | `20fa805145` | 2026-10-08 | 1.94 | 1.86 | 0.69 | +9.8% | -18.9% | -3.5% / 보유 -34.8% (48일) | 관망 | 진입: macd_pos(f=16, s=21, sig=7) AND volume_spike(n=37, mult=3.51) | 청산: price_below_ma(n=55, kind=sma) OR ma_cross_down(fast=8, slow=102, kind=sma) | 익절 27.3% |
+| 5 | `7ba6000391` | 2026-10-09 | 1.85 | 1.91 | 0.66 | +14.6% | -15.9% | -1.6% / 보유 -33.2% (47일) | 관망 | 진입: donchian_break(n=26) | 청산: price_below_ma(n=15, kind=sma) OR ma_cross_down(fast=8, slow=102, kind=sma) | 익절 27.1% / 트레일링 21.4% |
+| 6 | `cba03c6a1a` | 2026-10-09 | 1.79 | 2.26 | 0.43 | +7.4% | -19.4% | -4.8% / 보유 -33.2% (47일) | 관망 | 진입: macd_pos(f=16, s=21, sig=7) AND volume_spike(n=32, mult=3.51) | 청산: ma_cross_down(fast=8, slow=102, kind=sma) | 익절 27.3% |
+| 7 | `ae82267119` | 2026-10-09 | 1.88 | 1.66 | 0.70 | +9.8% | -17.9% | 관망 +0.0% / 보유 -32.4% (47일) | 관망 | 진입: price_above_ma(n=169, kind=ema) AND volume_spike(n=35, mult=3.62) | 청산: price_below_ma(n=56, kind=sma) | 익절 38.6% |
+| 8 | `5ade91c3ae` | 2026-10-13 | 1.82 | 1.75 | 1.21 | +23.5% | -12.1% | 관망 +0.0% / 보유 -32.0% (43일) | 관망 | 진입: volume_spike(n=34, mult=3.53) AND donchian_break(n=83) | 청산: price_below_ma(n=139, kind=ema) OR donchian_low_break(n=18) | 손절 9.5% / 익절 32.2% |
+| 9 | `4f7cd897f0` | 2026-10-10 | 2.28 | 1.60 | 0.42 | +7.0% | -23.9% | -5.5% / 보유 -32.8% (46일) | 관망 | 진입: volume_spike(n=15, mult=3.025) AND momentum_pos(n=17, th=0.01) | 청산: price_below_ma(n=57, kind=sma) OR ma_cross_down(fast=5, slow=109, kind=sma) OR price_below_ma(n=135, kind=ema) | 손절 20.4% / 익절 29.1% |
+| 10 | `cdcac84052` | 2026-10-09 | 1.82 | 1.89 | 0.16 | +3.8% | -21.9% | -4.8% / 보유 -33.6% (48일) | 관망 | 진입: price_above_ma(n=26, kind=ema) AND volume_spike(n=28, mult=2.52) | 청산: price_below_ma(n=55, kind=sma) OR ma_cross_down(fast=8, slow=99, kind=sma) | 손절 14.3% / 익절 27.3% / 트레일링 21.4% |
+| 11 | `43ba22956d` | 2026-11-23 | 2.35 | 1.38 | 0.28 | +5.5% | -19.6% | 관망 +0.0% / 보유 -1.5% (2일) | 관망 | 진입: macd_pos(f=3, s=29, sig=16) AND ma_cross_up(fast=36, slow=112, kind=ema) AND ma_cross_up(fast=5, slow=23, kind=ema) | 청산: donchian_low_break(n=9) OR rsi_above(n=25, th=79) OR bars_held(n=21) | 익절 30.4% |
+| 12 | `6f3685817a` | 2026-10-10 | 1.87 | 1.42 | 0.61 | +9.1% | -16.9% | 관망 +0.0% / 보유 -32.9% (46일) | 관망 | 진입: volume_spike(n=15, mult=3.025) AND momentum_pos(n=17, th=0.01) AND ma_cross_up(fast=13, slow=154, kind=sma) | 청산: price_below_ma(n=57, kind=sma) OR ma_cross_down(fast=5, slow=109, kind=sma) OR price_below_ma(n=135, kind=ema) | 익절 30.7% |
+| 13 | `d7fb6c9904` | 2026-10-11 | 1.96 | 1.86 | 0.14 | +0.5% | -27.2% | -6.3% / 보유 -33.1% (45일) | 관망 | 진입: volume_spike(n=15, mult=2.369) AND momentum_pos(n=17, th=0.01) | 청산: price_below_ma(n=57, kind=sma) OR ma_cross_down(fast=5, slow=109, kind=sma) OR price_below_ma(n=135, kind=ema) | 익절 41.1% |
+| 14 | `114ad67d25` | 2026-10-11 | 2.01 | 1.68 | 0.13 | +0.2% | -27.4% | -5.1% / 보유 -33.1% (45일) | 관망 | 진입: volume_spike(n=20, mult=3.069) AND momentum_pos(n=17, th=0.01) | 청산: price_below_ma(n=142, kind=sma) OR ma_cross_down(fast=5, slow=109, kind=sma) OR price_below_ma(n=135, kind=ema) | 손절 20.4% / 익절 29.1% |
+| 15 | `4ca2bafdac` | 2026-10-27 | 1.52 | 2.25 | 0.65 | +10.9% | -18.9% | 관망 +0.0% / 보유 -26.9% (30일) | 관망 | 진입: donchian_break(n=86) OR drawdown_from_high(n=21, th=0.19) | 청산: donchian_low_break(n=27) OR price_below_ma(n=30, kind=ema) | 익절 6.2% |
+| 16 | `2439726ead` | 2026-10-08 | 1.67 | 1.88 | 0.19 | +2.0% | -23.7% | -5.9% / 보유 -34.6% (48일) | 관망 | 진입: donchian_break(n=12) AND volume_spike(n=24, mult=2.89) | 청산: price_below_ma(n=116, kind=sma) |
+| 17 | `b12dd3fbc7` | 2026-10-09 | 1.79 | 1.54 | 0.46 | +5.9% | -30.1% | -2.9% / 보유 -33.6% (48일) | 관망 | 진입: donchian_break(n=52) | 청산: price_below_ma(n=42, kind=sma) OR donchian_low_break(n=53) | 익절 33.6% |
+| 18 | `fd1c453679` | 2026-10-10 | 2.05 | 1.75 | 0.34 | +5.3% | -23.3% | -6.6% / 보유 -32.4% (46일) | 관망 | 진입: volume_spike(n=20, mult=1.54) AND volume_spike(n=15, mult=2.715) AND price_above_ma(n=16, kind=sma) | 청산: price_below_ma(n=55, kind=sma) OR ma_cross_down(fast=8, slow=78, kind=sma) | 익절 27.3% |
+| 19 | `6335aeebf2` | 2026-10-10 | 2.03 | 1.58 | 0.28 | +3.8% | -23.9% | -5.5% / 보유 -32.9% (46일) | 관망 | 진입: volume_spike(n=15, mult=3.025) AND momentum_pos(n=17, th=0.01) | 청산: price_below_ma(n=57, kind=sma) OR ma_cross_down(fast=5, slow=109, kind=sma) OR price_below_ma(n=135, kind=ema) |
+| 20 | `88b03c3bd9` | 2026-10-09 | 1.82 | 1.32 | -0.09 | -2.8% | -23.4% | -1.2% / 보유 -33.2% (47일) | 관망 | 진입: low_volatility(n=43, q=0.24) AND donchian_break(n=16) | 청산: price_below_ma(n=39, kind=ema) | 손절 12.0% / 익절 27.3% |
+| 21 | `030e70f004` | 2026-10-10 | 2.05 | 1.35 | -0.02 | -2.0% | -20.9% | -4.2% / 보유 -32.9% (46일) | 관망 | 진입: volume_spike(n=15, mult=3.025) AND momentum_pos(n=17, th=0.01) | 청산: price_below_ma(n=57, kind=sma) OR ma_cross_down(fast=47, slow=239, kind=sma) OR donchian_low_break(n=46) | 익절 29.1% |
+| 22 | `fa158e2ae7` | 2026-11-21 | 1.93 | 1.48 | 0.01 | -1.8% | -20.8% | -1.7% / 보유 +0.3% (4일) | XRP | 진입: volume_spike(n=19, mult=3.625) AND price_above_ma(n=18, kind=sma) | 청산: bars_held(n=38) OR donchian_low_break(n=21) | 손절 29.2% / 익절 30.0% / 트레일링 26.3% |
+| 23 | `ed518e2f80` | 2026-10-11 | 2.00 | 1.50 | 0.25 | +3.4% | -22.1% | -5.8% / 보유 -33.1% (45일) | 관망 | 진입: volume_spike(n=12, mult=3.069) AND momentum_pos(n=17, th=0.01) | 청산: ma_cross_down(fast=5, slow=108, kind=sma) OR price_below_ma(n=135, kind=ema) | 손절 20.4% / 익절 29.1% |
+| 24 | `848c7af378` | 2026-11-20 | 1.74 | 1.56 | 0.54 | +8.6% | -21.8% | 관망 +0.0% / 보유 -3.8% (5일) | 관망 | 진입: price_above_ma(n=76, kind=sma) AND macd_pos(f=7, s=26, sig=7) AND low_volatility(n=44, q=0.5) | 청산: price_below_ma(n=22, kind=ema) | 익절 28.0% / 트레일링 27.7% |
+| 25 | `84fcd77045` | 2026-10-12 | 1.43 | 1.75 | 0.21 | +1.9% | -12.2% | -3.9% / 보유 -33.2% (44일) | 관망 | 진입: volume_spike(n=15, mult=3.069) AND momentum_pos(n=17, th=0.01) AND volume_spike(n=10, mult=2.61) | 청산: bars_held(n=12) OR ma_cross_down(fast=6, slow=109, kind=sma) | 손절 28.0% / 익절 29.1% / 트레일링 28.7% |
+| 26 | `c1fa33b98e` | 2026-11-21 | 1.79 | 1.46 | 1.01 | +14.4% | -17.5% | 관망 +0.0% / 보유 +0.3% (4일) | 관망 | 진입: volume_spike(n=26, mult=3.619) AND low_volatility(n=45, q=0.64) | 청산: price_below_ma(n=55, kind=sma) | 손절 22.7% / 익절 30.0% |
+| 27 | `5b8f9bc24f` | 2026-11-18 | 1.36 | 1.88 | 0.58 | +10.3% | -16.0% | 관망 +0.0% / 보유 -6.3% (7일) | 관망 | 진입: donchian_break(n=90) OR drawdown_from_high(n=23, th=0.168) | 청산: price_below_ma(n=18, kind=sma) OR bars_held(n=38) |
+| 28 | `404256e1c1` | 2026-11-24 | 1.68 | 1.54 | 0.72 | +12.8% | -16.8% | 관망 +0.0% / 보유 -2.6% (1일) | 관망 | 진입: macd_pos(f=17, s=34, sig=6) AND volume_spike(n=44, mult=1.39) AND ma_cross_up(fast=47, slow=187, kind=ema) | 청산: bars_held(n=13) OR price_below_ma(n=17, kind=ema) |
+| 29 | `c2aebfdff3` | 2026-11-19 | 1.38 | 1.84 | 0.32 | +3.8% | -17.7% | 관망 +0.0% / 보유 -5.0% (6일) | 관망 | 진입: price_above_ma(n=117, kind=sma) AND volume_spike(n=11, mult=3.41) | 청산: price_below_ma(n=119, kind=sma) OR bars_held(n=39) | 손절 10.9% |
+| 30 | `481633c95e` | 2026-11-24 | 2.08 | 1.14 | 0.07 | -0.5% | -19.0% | 관망 +0.0% / 보유 -2.6% (1일) | 관망 | 진입: macd_pos(f=23, s=54, sig=12) AND volume_spike(n=19, mult=3.152) AND price_above_ma(n=232, kind=ema) | 청산: price_below_ma(n=56, kind=sma) OR ma_cross_down(fast=51, slow=150, kind=sma) | 익절 46.7% / 트레일링 9.4% |
+| 31 | `08a39b7267` | 2026-10-10 | 2.02 | 1.48 | 0.09 | +0.2% | -21.2% | -6.9% / 보유 -32.4% (46일) | 관망 | 진입: macd_pos(f=14, s=21, sig=7) AND volume_spike(n=29, mult=3.51) | 청산: price_below_ma(n=51, kind=sma) | 익절 60.8% |
+| 32 | `3ec1452b69` | 2026-11-21 | 1.77 | 1.40 | 0.75 | +13.5% | -21.2% | 관망 +0.0% / 보유 +0.3% (4일) | 관망 | 진입: low_volatility(n=36, q=0.56) AND momentum_pos(n=17, th=0.008) AND volume_spike(n=10, mult=2.599) | 청산: price_below_ma(n=58, kind=sma) OR ma_cross_down(fast=6, slow=107, kind=sma) OR price_below_ma(n=135, kind=ema) | 손절 21.3% / 익절 29.1% |
+| 33 | `4414a03b38` | 2026-11-19 | 1.63 | 1.50 | 0.07 | -0.9% | -23.8% | -2.6% / 보유 -5.0% (6일) | 관망 | 진입: volume_spike(n=57, mult=3.68) AND macd_pos(f=10, s=50, sig=6) | 청산: ma_cross_down(fast=20, slow=88, kind=ema) | 트레일링 10.0% |
+| 34 | `f1611a53cb` | 2026-11-23 | 1.60 | 1.53 | -0.40 | -10.2% | -34.1% | -5.1% / 보유 -1.5% (2일) | 관망 | 진입: macd_pos(f=3, s=29, sig=15) AND volume_spike(n=10, mult=1.78) | 청산: price_below_ma(n=16, kind=sma) OR rsi_above(n=25, th=79) | 익절 25.6% |
+| 35 | `3504da9518` | 2026-11-20 | 1.20 | 1.92 | 1.17 | +15.3% | -12.0% | 관망 +0.0% / 보유 -4.4% (5일) | 관망 | 진입: donchian_break(n=90) AND volume_spike(n=55, mult=3.84) | 청산: bars_held(n=40) | 손절 4.6% |
+| 36 | `1c5674c6d8` | 2026-11-19 | 1.69 | 1.33 | 0.58 | +10.7% | -15.0% | 관망 +0.0% / 보유 -5.0% (6일) | 관망 | 진입: donchian_break(n=36) AND low_volatility(n=17, q=0.55) | 청산: price_below_ma(n=22, kind=ema) |
+| 37 | `51e55b9c84` | 2026-10-26 | 1.59 | 1.71 | 1.36 | +15.8% | -8.9% | -2.0% / 보유 -27.5% (30일) | SOL | 진입: volume_spike(n=14, mult=3.68) AND donchian_break(n=51) | 청산: bars_held(n=35) | 손절 12.9% / 익절 40.4% / 트레일링 26.8% |
+| 38 | `20158f4a24` 🆕 | 2026-11-25 | 1.76 | 1.23 | 0.60 | +13.0% | -23.7% | - | - | 진입: ma_cross_up(fast=38, slow=104, kind=ema) AND macd_pos(f=12, s=23, sig=10) AND rsi_below(n=2, th=40) | 청산: price_below_ma(n=56, kind=sma) OR rsi_above(n=11, th=88) OR bars_held(n=56) | 익절 27.1% |
+| 39 | `c8693cdfa2` | 2026-11-24 | 1.77 | 1.20 | 0.17 | +1.4% | -15.8% | 관망 +0.0% / 보유 -2.6% (1일) | 관망 | 진입: macd_pos(f=21, s=26, sig=12) AND volume_spike(n=20, mult=3.173) AND donchian_break(n=58) | 청산: price_below_ma(n=58, kind=sma) OR ma_cross_down(fast=51, slow=150, kind=sma) OR donchian_low_break(n=19) | 익절 46.7% / 트레일링 20.7% |
+| 40 | `38bbcc0f77` 🆕 | 2026-11-25 | 1.59 | 1.36 | 0.02 | -2.8% | -15.9% | - | - | 진입: macd_pos(f=12, s=23, sig=10) AND volume_spike(n=22, mult=3.98) | 청산: price_below_ma(n=56, kind=sma) OR rsi_above(n=11, th=88) OR bars_held(n=56) | 익절 27.1% |
+| 41 | `88108241f6` | 2026-11-22 | 1.74 | 1.19 | 0.94 | +16.3% | -20.3% | 관망 +0.0% / 보유 -1.5% (3일) | 관망 | 진입: donchian_break(n=27) AND low_volatility(n=59, q=0.29) | 청산: ma_cross_down(fast=39, slow=61, kind=ema) OR price_below_ma(n=54, kind=sma) | 손절 16.0% / 익절 52.7% |
+| 42 | `efc7382834` | 2026-11-23 | 1.62 | 1.29 | 0.87 | +15.7% | -14.6% | 관망 +0.0% / 보유 -1.5% (2일) | 관망 | 진입: low_volatility(n=31, q=0.43) AND donchian_break(n=30) AND ma_cross_up(fast=23, slow=138, kind=sma) | 청산: price_below_ma(n=70, kind=sma) OR price_below_ma(n=33, kind=ema) | 트레일링 27.4% |
+| 43 | `427e33e785` | 2026-11-22 | 1.56 | 1.28 | 0.42 | +9.1% | -26.5% | -6.6% / 보유 -1.5% (3일) | 관망 | 진입: volume_spike(n=37, mult=2.16) AND macd_pos(f=7, s=44, sig=15) | 청산: bars_held(n=20) OR price_below_ma(n=22, kind=sma) | 익절 7.9% / 트레일링 17.2% |
+| 44 | `063f69d8d7` 🆕 | 2026-11-25 | 1.37 | 1.29 | 0.04 | -1.3% | -11.7% | - | - | 진입: ma_cross_up(fast=38, slow=111, kind=ema) AND volume_spike(n=11, mult=3.52) AND momentum_pos(n=30, th=0.005) | 청산: price_below_ma(n=56, kind=sma) OR rsi_above(n=11, th=88) | 익절 26.3% |
+| 45 | `4d4d21ab4f` | 2026-11-22 | 1.21 | 1.40 | 0.97 | +17.0% | -16.5% | 관망 +0.0% / 보유 -1.5% (3일) | 관망 | 진입: donchian_break(n=86) AND volume_spike(n=53, mult=2.4) | 청산: donchian_low_break(n=23) | 손절 3.9% / 익절 29.7% / 트레일링 19.1% |
 
-비교 기준(단순 보유) 샤프 — 학습 0.98 · 검증 0.71 · 시험 -1.04
+비교 기준(단순 보유) 샤프 — 학습 0.99 · 검증 0.67 · 시험 -1.05
 
 ![top equity](top_equity.png)
 
