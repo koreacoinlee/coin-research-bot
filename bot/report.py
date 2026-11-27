@@ -81,7 +81,8 @@ def write(hof, frames, cfg, log, today, added, state=None, new_grads=()) -> str:
         "## 🎓 졸업 심사",
         "",
         f"전당에 오른 뒤 **실제로 새로 쌓인 시세**로 매기는 시험이에요. 기준: 전진 {g['min_days']}일 이상 · "
-        f"그 기간에 +{g['min_upleg'] * 100:.0f}% 넘는 상승장 포함 · 실제 거래 {g['min_trades']}회 이상(4코인 합) · "
+        f"그 기간 +{g['min_upleg'] * 100:.0f}% 넘는 상승장에서 상승폭의 {g['min_capture'] * 100:.0f}% 이상을 실제로 벌 것 · "
+        f"전진 수익 0% 초과 · 실제 거래 {g['min_trades']}회 이상(4코인 합) · "
         f"같은 기간 단순 보유보다 나은 수익 · 코인별 최대 낙폭 {g['max_mdd'] * 100:.0f}% 이내 · 튼튼함 심사 통과.",
         "",
     ]
@@ -94,8 +95,8 @@ def write(hof, frames, cfg, log, today, added, state=None, new_grads=()) -> str:
     if lapsed:
         lines.append(f"  \n졸업 후 기준에서 벗어나 보류 중: {', '.join(f'`{i}`' for i in lapsed)}")
     lines += ["", "졸업에 가장 가까운 전략:", "",
-              "| ID | 전진 기간 | 상승장 경험 | 실제 거래 | 보유 대비 | 최대 낙폭 | 튼튼함 | 통과 |",
-              "|---|---|---|---|---|---|---|---|"]
+              "| ID | 전진 기간 | 상승장 참여 | 실제 수익 | 실제 거래 | 보유 대비 | 최대 낙폭 | 튼튼함 | 통과 |",
+              "|---|---|---|---|---|---|---|---|---|"]
     near = sorted(hof, key=lambda h: (h.get("graduation", {}).get("n_ok", 0), h.get("forward", {}) and h["forward"]["days"] or 0), reverse=True)[:8]
     for h in near:
         gr = h.get("graduation")

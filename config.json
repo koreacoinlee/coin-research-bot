@@ -33,7 +33,8 @@
     "min_upleg": 0.1,
     "min_trades": 10,
     "min_excess": 0.0,
-    "max_mdd": -0.2
+    "max_mdd": -0.2,
+    "min_capture": 0.3
   },
   "fetch_timeout_s": 180,
   "admission_max_s": 300,

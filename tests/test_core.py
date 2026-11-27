@@ -19,7 +19,7 @@ from bot.strategy import BLOCKS, EXIT_BLOCKS, random_strategy
 
 CFG = {
     "interval": "4h", "hof_size": 5, "forward_min_bars": 42, "retire_forward_mdd": -0.35,
-    "graduation": {"min_days": 60, "min_upleg": 0.10, "min_trades": 10, "min_excess": 0.0, "max_mdd": -0.20},
+    "graduation": {"min_days": 60, "min_upleg": 0.10, "min_capture": 0.3, "min_trades": 10, "min_excess": 0.0, "max_mdd": -0.20},
     "robustness": {"neighbors": 2, "neighbor_scale": 0.15, "neighbor_min_excess": 0.25, "cost_mult": 3,
                    "min_coin_share": 0.75, "max_checks": 5},
 }
@@ -130,6 +130,21 @@ def test_forward_metrics_bh_and_upleg():
     assert abs(f["upleg"] - (100 / 80 - 1)) < 1e-12, f["upleg"]
     assert f["total"] == 0 and f["trades"] == 0 and f["holding"] == []
     assert abs(f["excess"] - 0.04) < 1e-12
+    assert f["capture"] == 0, "한 번도 안 들어간 전략이 상승장을 번 것으로 나옴"
+
+
+def test_capture_measures_the_rally():
+    # 100→80 하락 후 80→100 반등. 반등 내내 보유한 전략은 상승의 100% 를 벌어야 한다
+    t = pd.date_range("2024-01-01", periods=12, freq="4h")
+    close = np.array([100, 100, 100, 100, 90, 80, 85, 90, 95, 100, 100, 100], float)
+    df = pd.DataFrame(dict(time=t, open=close, high=close, low=close, close=close, volume=1.0))
+    s = {"entry": [{"type": "momentum_pos", "n": 1, "th": 0.0}], "entry_mode": "and",
+         "exit": [{"type": "bars_held", "n": 50}], "stop": None, "take": None, "trail": None}
+    f = H.forward_metrics({"X": df}, s, str(t[3]), "4h")
+    assert abs(f["upleg"] - 0.25) < 1e-12
+    # 80→85 첫 상승을 보고 다음 봉 시가(90)에 들어가므로 90→100 만 번다 = (100/90-1)/0.25
+    cost = bt.FEE + bt.SLIPPAGE
+    assert abs(f["capture"] - (100 / (90 * (1 + cost)) - 1) / 0.25) < 1e-9, f["capture"]
 
 
 # ------------------------------------------------------------ 전당 자리 관리
@@ -179,14 +194,16 @@ def test_drawdown_retirement_only_after_maturity():
 # ------------------------------------------------------------ 졸업 / 튼튼함
 
 def test_graduation():
-    ok = {"forward": {"days": 61, "upleg": 0.12, "trades": 12, "excess": 0.03, "worst_mdd": -0.15},
+    ok = {"forward": {"days": 61, "upleg": 0.12, "capture": 0.5, "total": 0.02, "trades": 12, "excess": 0.03, "worst_mdd": -0.15},
           "robustness": {"passed": True}}
     assert H.graduation(ok, CFG)["passed"]
-    for k, v in (("days", 59), ("upleg", 0.05), ("trades", 9), ("excess", -0.01), ("worst_mdd", -0.25)):
+    # 이번에 발견한 허점: 상승장은 있었지만 하나도 못 번 전략 (capture 0) / 손실 중인 전략
+    for k, v in (("days", 59), ("upleg", 0.05), ("capture", 0.0), ("total", -0.03), ("trades", 9),
+                 ("excess", -0.01), ("worst_mdd", -0.25)):
         bad = copy.deepcopy(ok)
         bad["forward"][k] = v
         g = H.graduation(bad, CFG)
-        assert not g["passed"] and g["n_ok"] == 5, (k, g)
+        assert not g["passed"] and g["n_ok"] == g["n_total"] - 1, (k, g)
     weak = copy.deepcopy(ok)
     weak["robustness"] = {"passed": False}
     assert not H.graduation(weak, CFG)["passed"]

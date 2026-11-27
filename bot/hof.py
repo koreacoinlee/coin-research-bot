@@ -29,7 +29,13 @@ def forward_metrics(frames: dict, s: dict, since: str, interval: str) -> dict | 
         base = close[~mask][-1]                     # 입성 시점 종가
         path = np.r_[base, close[mask]]
         x["bh"] = float(path[-1] / base - 1)
-        x["upleg"] = float(np.max(path / np.minimum.accumulate(path)) - 1)  # 기간 중 가장 큰 상승 폭
+        run = path / np.minimum.accumulate(path)
+        j = int(np.argmax(run))                       # 가장 큰 상승 구간의 꼭대기
+        i = int(np.argmin(path[: j + 1]))             # 그 직전 바닥
+        x["upleg"] = float(run[j] - 1)                # 기간 중 가장 큰 상승 폭
+        # 그 상승 구간에서 전략이 실제로 번 비율 (path[k-1]→path[k] 수익이 rm[k-1])
+        got = float(np.prod(1 + rm[i:j]) - 1) if j > i else 0.0
+        x["capture"] = got / x["upleg"] if x["upleg"] > 0 else 0.0
         x["holding"] = bool(p[-1])                   # 지금 보유 중인가
         per[m] = x
     bars = int(min(((df["time"] > t0).sum()) for df in frames.values()))
@@ -46,6 +52,7 @@ def forward_metrics(frames: dict, s: dict, since: str, interval: str) -> dict | 
         "worst_mdd": float(min(x["mdd"] for x in per.values())),
         "trades": int(sum(x["trades"] for x in per.values())),
         "upleg": float(np.median([x["upleg"] for x in per.values()])),
+        "capture": float(np.median([x["capture"] for x in per.values()])),
         "holding": [m for m, x in per.items() if x["holding"]],
     }
 
@@ -110,7 +117,11 @@ def graduation(h: dict, cfg: dict) -> dict:
     days = f.get("days", 0.0)
     checks = [
         ("전진 기간", days >= g["min_days"], f"{days:.0f}일", f"{g['min_days']}일↑"),
-        ("상승장 경험", f.get("upleg", 0) >= g["min_upleg"], f"{f.get('upleg', 0) * 100:.0f}%", f"+{g['min_upleg'] * 100:.0f}%↑"),
+        # 상승장이 '있었다'만으로는 부족: 그 상승에서 실제로 벌었어야 한다
+        ("상승장 참여", f.get("upleg", 0) >= g["min_upleg"] and f.get("capture", 0) >= g["min_capture"],
+         f"+{f.get('upleg', 0) * 100:.0f}% 중 {f.get('capture', 0) * 100:.0f}%",
+         f"+{g['min_upleg'] * 100:.0f}%↑ 상승의 {g['min_capture'] * 100:.0f}%↑"),
+        ("실제 수익", f.get("total", -1) > 0, f"{f.get('total', 0) * 100:+.1f}%", "0% 초과"),
         ("실제 거래", f.get("trades", 0) >= g["min_trades"], f"{f.get('trades', 0)}회", f"{g['min_trades']}회↑"),
         ("보유 대비", f.get("excess", -1) > g["min_excess"], f"{f.get('excess', 0) * 100:+.1f}%p", "+0%p 초과"),
         ("최대 낙폭", f.get("worst_mdd", -1) >= g["max_mdd"], f"{abs(f.get('worst_mdd', 0)) * -100:.0f}%".replace("-0%", "0%"), f"{g['max_mdd'] * 100:.0f}% 이내"),
